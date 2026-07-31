@@ -25,6 +25,19 @@ export type SiteConfig = {
 
 const GODESI = process.env.NEXT_PUBLIC_GODESI_URL ?? "https://godesi.com";
 
+/** Godesi event types that belong on a festival site. */
+const FESTIVAL_TYPES = [
+  "Festival / Mela",
+  "Parade / Procession",
+  "Dance / Garba / Bhangra",
+  "Puja / Satsang / Kirtan",
+  "Concert",
+  "Music / DJ night",
+  "Party",
+  "Kids & family",
+  "Competition",
+];
+
 export function godesiUrl(path = "") {
   return `${GODESI}${path}`;
 }
@@ -50,25 +63,32 @@ export const SITES: SiteConfig[] = [
         moreLabel: "All news on Godesi",
       },
       {
-        heading: "Politics & civic",
-        blurb: "Elections, councils, policy and community representation.",
-        query: { kind: "news", topic: "politics", limit: "6" },
-        moreHref: "/news?topic=politics",
-        moreLabel: "More politics",
+        heading: "India",
+        blurb: "What is happening back home.",
+        query: { kind: "news", q: "India", limit: "6" },
+        moreHref: "/news",
+        moreLabel: "More India news",
       },
       {
-        heading: "Immigration & visas",
+        heading: "Visas & immigration",
         blurb: "H-1B, green cards, consulates and travel rules.",
-        query: { kind: "news", topic: "immigration", limit: "6" },
-        moreHref: "/news?topic=immigration",
+        query: { kind: "news", q: "visa", limit: "6" },
+        moreHref: "/news",
         moreLabel: "More immigration news",
       },
       {
-        heading: "Community",
-        blurb: "Temples, associations, schools and neighbourhood news.",
-        query: { kind: "news", topic: "community", limit: "6" },
-        moreHref: "/news?topic=community",
-        moreLabel: "More community news",
+        heading: "Faith & festivals",
+        blurb: "Temples, gurdwaras, pujas and religious observances.",
+        query: { kind: "news", topic: "faith", limit: "6" },
+        moreHref: "/news?topic=faith",
+        moreLabel: "More faith news",
+      },
+      {
+        heading: "Community events near you",
+        blurb: "What the community is gathering for this month.",
+        query: { kind: "events", limit: "6" },
+        moreHref: "/events",
+        moreLabel: "All events on Godesi",
       },
     ],
     about: [
@@ -92,7 +112,11 @@ export const SITES: SiteConfig[] = [
       {
         heading: "Upcoming festival events",
         blurb: "Melas, garba nights, parades and cultural shows.",
-        query: { kind: "events", limit: "18" },
+        query: {
+          kind: "events",
+          type: FESTIVAL_TYPES.join(","),
+          limit: "18",
+        },
         moreHref: "/events",
         moreLabel: "All events on Godesi",
       },
@@ -102,6 +126,13 @@ export const SITES: SiteConfig[] = [
         query: { kind: "events", type: "Puja / Satsang / Kirtan", limit: "6" },
         moreHref: "/events",
         moreLabel: "More religious events",
+      },
+      {
+        heading: "Everything else coming up",
+        blurb: "Concerts, workshops, meetups and community programmes.",
+        query: { kind: "events", limit: "6" },
+        moreHref: "/events",
+        moreLabel: "See the full calendar",
       },
       {
         heading: "Where to shop & cater",
