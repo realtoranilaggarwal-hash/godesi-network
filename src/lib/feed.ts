@@ -45,7 +45,25 @@ export type BusinessItem = {
   url: string;
 };
 
-export type FeedItem = NewsItem | EventItem | BusinessItem;
+/** An open requirement on Godesi — a job, bench need or buyer enquiry. */
+export type LeadItem = {
+  id: string;
+  title: string;
+  teaser: string;
+  category: string;
+  categorySlug: string | null;
+  city: string;
+  budgetMin: number | null;
+  budgetMax: number | null;
+  postedAt: string;
+  url: string;
+};
+
+export type FeedItem = NewsItem | EventItem | BusinessItem | LeadItem;
+
+export function isLead(item: FeedItem): item is LeadItem {
+  return "postedAt" in item;
+}
 
 export function isNews(item: FeedItem): item is NewsItem {
   return "publishedAt" in item;

@@ -1,4 +1,4 @@
-import { FeedItem, isEvent, isNews } from "@/lib/feed";
+import { FeedItem, isEvent, isLead, isNews } from "@/lib/feed";
 import { ShareRow } from "@/components/ShareRow";
 import { godesiUrl } from "@/lib/sites";
 
@@ -25,16 +25,20 @@ function place(city?: string | null, state?: string | null) {
 
 /** One teaser card. The whole card links to the full record on Godesi. */
 export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
-  const title = isNews(item) || isEvent(item) ? item.title : item.name;
-  const image = picture(
-    isNews(item) || isEvent(item) ? item.imageUrl : item.logoUrl,
-  );
+  const title = isNews(item) || isEvent(item) || isLead(item)
+    ? item.title
+    : item.name;
+  const image = isLead(item)
+    ? null
+    : picture(isNews(item) || isEvent(item) ? item.imageUrl : item.logoUrl);
 
   const meta = isNews(item)
     ? [dateLabel(item.publishedAt), place(item.city, item.state), item.source]
     : isEvent(item)
       ? [dateLabel(item.startsAt), item.venue, place(item.city, item.state)]
-      : [place(item.city, item.state), item.subcategory ?? item.categorySlug];
+      : isLead(item)
+        ? [dateLabel(item.postedAt), item.city, item.category]
+        : [place(item.city, item.state), item.subcategory ?? item.categorySlug];
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
@@ -69,7 +73,7 @@ export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
           rel="noopener"
           className={`mt-2 text-xs font-bold ${accent}`}
         >
-          Read on Godesi →
+          {isLead(item) ? "Respond on Godesi →" : "Read on Godesi →"}
         </a>
         <ShareRow url={item.url} title={title} image={image} />
       </div>

@@ -18,9 +18,11 @@ export type SiteConfig = {
   /** Tailwind classes, kept as literals so the compiler keeps them. */
   gradient: string;
   accent: string;
-  kind: "news" | "events" | "businesses";
+  kind: "news" | "events" | "businesses" | "leads";
   sections: Section[];
   about: string[];
+  /** Hero search: shown when the site is a lookup tool rather than a feed. */
+  search?: { placeholder: string; suggestions: string[] };
 };
 
 const GODESI = process.env.NEXT_PUBLIC_GODESI_URL ?? "https://godesi.com";
@@ -193,6 +195,94 @@ export const SITES: SiteConfig[] = [
       "The Indian Business Association directory exists to make Indian-owned businesses easy to find and easy to support.",
       "Listings come from Godesi's open directory. Owners claim their page free, add photos, hours, WhatsApp and packages.",
       "There is no membership fee to be listed — Godesi charges only for optional featured placement and advertising.",
+    ],
+  },
+  {
+    key: "itplacement",
+    domain: "itplacement.help",
+    name: "IT Placement Help",
+    tagline: "IT jobs, bench openings and placement help for desis in the USA",
+    description:
+      "Search open IT requirements, bench positions and placement support — H-1B, OPT and CPT friendly consultancies listed free on Godesi.",
+    emoji: "\u{1F4BB}",
+    gradient: "from-sky-700 via-blue-700 to-indigo-800",
+    accent: "text-blue-700",
+    kind: "leads",
+    search: {
+      placeholder: "Search a skill, role or city — e.g. Java developer, Dallas",
+      suggestions: ["Java", "QA", "Data engineer", "Salesforce", "OPT", "H1B"],
+    },
+    sections: [
+      {
+        heading: "Open IT requirements",
+        blurb: "Live roles and bench needs posted by employers and consultancies.",
+        query: { kind: "leads", category: "jobs,it-training", limit: "18" },
+        moreHref: "/leads",
+        moreLabel: "All requirements on Godesi",
+      },
+      {
+        heading: "Placement & training help",
+        blurb: "OPT/CPT training, interview prep, resume help and placement support.",
+        query: { kind: "businesses", category: "it-training", limit: "9" },
+        moreHref: "/categories/it-training",
+        moreLabel: "All IT training & career services",
+      },
+      {
+        heading: "Immigration & visa news",
+        blurb: "H-1B, green card and consulate updates that affect your job.",
+        query: { kind: "news", q: "visa", limit: "6" },
+        moreHref: "/news",
+        moreLabel: "More immigration news",
+      },
+    ],
+    about: [
+      "IT Placement Help is the candidate view of Godesi's IT jobs and requirements board.",
+      "Requirements are posted by employers, consultancies and recruiters on Godesi; you respond there, free.",
+      "Looking for training or placement support? Every consultancy listed here has a free, claimable Godesi page.",
+    ],
+  },
+  {
+    key: "itplacementservices",
+    domain: "itplacementservices.com",
+    name: "IT Placement Services",
+    tagline: "Desi IT staffing, consultancies and corporate training",
+    description:
+      "A free directory of Indian-owned IT staffing firms, consultancies and training institutes in the USA — post a requirement or hotlist and reach candidates.",
+    emoji: "\u{1F91D}",
+    gradient: "from-slate-800 via-cyan-800 to-teal-700",
+    accent: "text-teal-700",
+    kind: "businesses",
+    search: {
+      placeholder: "Search a consultancy, skill or city — e.g. staffing, Edison",
+      suggestions: ["Staffing", "Consulting", "Training", "Edison", "Dallas"],
+    },
+    sections: [
+      {
+        heading: "IT staffing & consultancies",
+        blurb: "Firms that place candidates and run the bench.",
+        query: { kind: "businesses", category: "it-training", limit: "18" },
+        moreHref: "/categories/it-training",
+        moreLabel: "All IT training & career services",
+      },
+      {
+        heading: "Business & professional services",
+        blurb: "Payroll, immigration attorneys, accounting and back office.",
+        query: { kind: "businesses", category: "business-services", limit: "9" },
+        moreHref: "/categories/business-services",
+        moreLabel: "All business services",
+      },
+      {
+        heading: "Requirements looking for vendors",
+        blurb: "Open needs you can respond to today.",
+        query: { kind: "leads", category: "jobs,it-training", limit: "9" },
+        moreHref: "/leads",
+        moreLabel: "All requirements on Godesi",
+      },
+    ],
+    about: [
+      "IT Placement Services lists Indian-owned IT staffing firms, consultancies and training institutes across the USA.",
+      "Every listing is a free, claimable Godesi page — add your hotlist, contacts, WhatsApp and photos once and it shows here.",
+      "Post a requirement on Godesi and candidates and vendors respond directly; Godesi is not a party to any placement.",
     ],
   },
 ];

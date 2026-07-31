@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { AdSlot } from "@/components/AdSlot";
 import { FeedSection } from "@/components/FeedSection";
+import { SiteSearch } from "@/components/SiteSearch";
 import { godesiUrl, siteForHost } from "@/lib/sites";
 
 export const revalidate = 600;
@@ -20,6 +21,16 @@ const CTA: Record<string, { href: string; label: string; note: string }> = {
     href: "/signup",
     label: "🏪 List your business free",
     note: "Free page with photos, reviews, WhatsApp and a QR card",
+  },
+  itplacement: {
+    href: "/leads/new",
+    label: "📣 Post an IT requirement free",
+    note: "Employers and consultancies post roles; candidates respond free",
+  },
+  itplacementservices: {
+    href: "/signup",
+    label: "🏢 List your consultancy free",
+    note: "Free claimable page with hotlist, contacts, WhatsApp and photos",
   },
 };
 
@@ -51,6 +62,12 @@ export default function HomePage() {
           </a>
         </div>
         <p className="mt-2 text-xs text-white/80">{cta.note}</p>
+        {site.search ? (
+          <SiteSearch
+            placeholder={site.search.placeholder}
+            suggestions={site.search.suggestions}
+          />
+        ) : null}
       </section>
 
       {site.sections.map((section, index) => (
