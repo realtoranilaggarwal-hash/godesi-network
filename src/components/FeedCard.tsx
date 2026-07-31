@@ -1,5 +1,14 @@
 import { FeedItem, isEvent, isNews } from "@/lib/feed";
 import { ShareRow } from "@/components/ShareRow";
+import { godesiUrl } from "@/lib/sites";
+
+/** Publishers that refuse hot-linking still render through Godesi's proxy. */
+function picture(url: string | null) {
+  if (!url) return null;
+  return url.includes(".public.blob.vercel-storage.com")
+    ? url
+    : godesiUrl(`/api/img?u=${encodeURIComponent(url)}`);
+}
 
 function dateLabel(value: string) {
   return new Date(value).toLocaleDateString("en-US", {
@@ -17,7 +26,9 @@ function place(city?: string | null, state?: string | null) {
 /** One teaser card. The whole card links to the full record on Godesi. */
 export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
   const title = isNews(item) || isEvent(item) ? item.title : item.name;
-  const image = isNews(item) || isEvent(item) ? item.imageUrl : item.logoUrl;
+  const image = picture(
+    isNews(item) || isEvent(item) ? item.imageUrl : item.logoUrl,
+  );
 
   const meta = isNews(item)
     ? [dateLabel(item.publishedAt), place(item.city, item.state), item.source]
