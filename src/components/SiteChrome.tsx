@@ -4,10 +4,15 @@ const POST_LINKS: Record<string, { href: string; label: string }> = {
   desinewspaper: { href: "/news/report", label: "Report news" },
   diwali: { href: "/events/new", label: "Post your event" },
   iba: { href: "/signup", label: "List your business" },
+  itplacement: { href: "/leads/new", label: "Post a requirement" },
+  itplacementservices: { href: "/signup", label: "List your consultancy" },
 };
 
+/** A site without its own call to action still gets a working header. */
+const DEFAULT_POST = { href: "/signup", label: "Post on Godesi" };
+
 export function SiteHeader({ site }: { site: SiteConfig }) {
-  const post = POST_LINKS[site.key];
+  const post = POST_LINKS[site.key] ?? DEFAULT_POST;
 
   return (
     <header className={`bg-gradient-to-r ${site.gradient} text-white`}>

@@ -36,7 +36,11 @@ const CTA: Record<string, { href: string; label: string; note: string }> = {
 
 export default function HomePage() {
   const site = siteForHost(headers().get("host"));
-  const cta = CTA[site.key];
+  const cta = CTA[site.key] ?? {
+    href: "/signup",
+    label: "Post on Godesi",
+    note: "Free · listings, events and requirements",
+  };
 
   return (
     <main className="mx-auto max-w-6xl space-y-8 px-4 py-6">
