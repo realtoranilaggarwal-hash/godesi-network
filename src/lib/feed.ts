@@ -70,6 +70,8 @@ export type EliteItem = {
   state: string | null;
   country: string | null;
   imageUrl: string | null;
+  /** Photographer and licence, which must be shown wherever the photo is. */
+  imageCredit: string | null;
   badge: string;
   claimed: boolean;
   sourceUrl: string | null;

@@ -51,15 +51,29 @@ export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
       <a href={item.url} target="_blank" rel="noopener">
         {image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={image}
-            alt={title}
-            loading="lazy"
-            data-pin-media={image}
-            data-pin-description={title}
-            className="h-40 w-full object-cover"
-          />
+          // A portrait cropped to fill loses the face, so people are shown whole
+          // on a plain backdrop while news and event artwork still fills the card.
+          <span
+            className={
+              isElite(item)
+                ? "flex h-48 items-center justify-center bg-slate-100"
+                : "block"
+            }
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={image}
+              alt={title}
+              loading="lazy"
+              data-pin-media={image}
+              data-pin-description={title}
+              className={
+                isElite(item)
+                  ? "max-h-48 w-full object-contain"
+                  : "h-40 w-full object-cover"
+              }
+            />
+          </span>
         ) : null}
       </a>
       <div className="flex flex-1 flex-col p-4">
@@ -74,6 +88,11 @@ export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
         <p className="mt-auto pt-3 text-xs font-semibold text-slate-500">
           {meta.filter(Boolean).join(" · ")}
         </p>
+        {isElite(item) && item.imageCredit ? (
+          <p className="pt-1 text-[10px] leading-tight text-slate-400">
+            {item.imageCredit}
+          </p>
+        ) : null}
         {unclaimed ? (
           <p className="mt-2 rounded-lg bg-amber-50 px-2 py-1 text-[11px] font-semibold text-amber-900">
             Unclaimed profile — written from public record
