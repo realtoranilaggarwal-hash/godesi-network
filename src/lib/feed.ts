@@ -59,14 +59,43 @@ export type LeadItem = {
   url: string;
 };
 
-export type FeedItem = NewsItem | EventItem | BusinessItem | LeadItem;
+/** A GoDesi Elite profile: a recognised desi leader, claimed or waiting. */
+export type EliteItem = {
+  slug: string;
+  name: string;
+  org: string | null;
+  teaser: string;
+  category: string;
+  city: string;
+  state: string | null;
+  country: string | null;
+  imageUrl: string | null;
+  badge: string;
+  claimed: boolean;
+  sourceUrl: string | null;
+  sourceName: string | null;
+  publishedAt: string;
+  url: string;
+  claimUrl: string;
+};
+
+export type FeedItem =
+  | NewsItem
+  | EventItem
+  | BusinessItem
+  | LeadItem
+  | EliteItem;
 
 export function isLead(item: FeedItem): item is LeadItem {
   return "postedAt" in item;
 }
 
+export function isElite(item: FeedItem): item is EliteItem {
+  return "claimUrl" in item;
+}
+
 export function isNews(item: FeedItem): item is NewsItem {
-  return "publishedAt" in item;
+  return "publishedAt" in item && !isElite(item);
 }
 
 export function isEvent(item: FeedItem): item is EventItem {

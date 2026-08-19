@@ -27,6 +27,11 @@ const CTA: Record<string, { href: string; label: string; note: string }> = {
     label: "📣 Post an IT requirement free",
     note: "Employers and consultancies post roles; candidates respond free",
   },
+  desiwhoswho: {
+    href: "/desi-elite/apply",
+    label: "🏆 Nominate someone, or apply yourself",
+    note: "Free · our desk verifies every entry before it is published",
+  },
   itplacementservices: {
     href: "/signup",
     label: "🏢 List your consultancy free",

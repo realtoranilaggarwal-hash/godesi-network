@@ -18,7 +18,7 @@ export type SiteConfig = {
   /** Tailwind classes, kept as literals so the compiler keeps them. */
   gradient: string;
   accent: string;
-  kind: "news" | "events" | "businesses" | "leads";
+  kind: "news" | "events" | "businesses" | "leads" | "elite";
   sections: Section[];
   about: string[];
   /** Hero search: shown when the site is a lookup tool rather than a feed. */
@@ -283,6 +283,80 @@ export const SITES: SiteConfig[] = [
       "IT Placement Services lists Indian-owned IT staffing firms, consultancies and training institutes across the USA.",
       "Every listing is a free, claimable Godesi page — add your hotlist, contacts, WhatsApp and photos once and it shows here.",
       "Post a requirement on Godesi and candidates and vendors respond directly; Godesi is not a party to any placement.",
+    ],
+  },
+  {
+    key: "desiwhoswho",
+    domain: "desiwhoswho.com",
+    name: "Desi Who's Who",
+    tagline: "Desi who's who in America",
+    description:
+      "Indian, Pakistani, Bangladeshi and Sri Lankan Americans who lead companies, hospitals, courts, campuses, kitchens and stages — each with a claimable profile on Godesi.",
+    emoji: "\u{1F3C6}",
+    gradient: "from-amber-700 via-amber-600 to-rose-600",
+    accent: "text-amber-700",
+    kind: "elite",
+    search: {
+      placeholder: "Search a name, company, field or city — e.g. Microsoft, surgeon, Edison",
+      suggestions: ["Technology", "Healthcare", "Politics", "Chefs", "New York"],
+    },
+    sections: [
+      {
+        heading: "Business & technology",
+        blurb: "Founders, chief executives and investors.",
+        query: {
+          kind: "elite",
+          category: "Technology|Business & Entrepreneurship|Finance & Insurance",
+          limit: "18",
+        },
+        moreHref: "/desi-elite",
+        moreLabel: "All of GoDesi Elite",
+      },
+      {
+        heading: "Public service, law and policy",
+        blurb: "Members of Congress, judges, lawyers and officials.",
+        query: {
+          kind: "elite",
+          category: "Public Service & Politics|Law & Immigration",
+          limit: "12",
+        },
+        moreHref: "/desi-elite?category=Public+Service+%26+Politics",
+        moreLabel: "More in public service",
+      },
+      {
+        heading: "Medicine, science and education",
+        blurb: "Doctors, researchers, deans and university presidents.",
+        query: {
+          kind: "elite",
+          category: "Healthcare|Education|Other",
+          limit: "12",
+        },
+        moreHref: "/desi-elite?category=Healthcare",
+        moreLabel: "More in medicine and research",
+      },
+      {
+        heading: "Arts, food, media and sport",
+        blurb: "Actors, writers, musicians, chefs and athletes.",
+        query: {
+          kind: "elite",
+          category: "Arts, Media & Music|Food & Hospitality|Sports & Fitness",
+          limit: "12",
+        },
+        moreHref: "/desi-elite?category=Arts%2C+Media+%26+Music",
+        moreLabel: "More in arts and culture",
+      },
+      {
+        heading: "Community leaders",
+        blurb: "People running associations, charities and nonprofits.",
+        query: { kind: "elite", category: "Community & Non-profit", limit: "9" },
+        moreHref: "/desi-elite?category=Community+%26+Non-profit",
+        moreLabel: "More community leaders",
+      },
+    ],
+    about: [
+      "Desi Who's Who lists South Asian Americans recognised in their field, and every profile lives on Godesi's GoDesi Elite directory.",
+      "Profiles marked unclaimed were written by the Godesi desk from public record — an encyclopaedia entry, an official biography or a company page, credited and linked. No photograph or biography is copied, and no contact number is published.",
+      "If a profile is yours, claim it on Godesi and it becomes yours to correct, complete and illustrate. If something is wrong, tell us and we will fix or remove it.",
     ],
   },
 ];

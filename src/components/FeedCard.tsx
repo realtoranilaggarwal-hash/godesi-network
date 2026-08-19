@@ -1,4 +1,4 @@
-import { FeedItem, isEvent, isLead, isNews } from "@/lib/feed";
+import { FeedItem, isElite, isEvent, isLead, isNews } from "@/lib/feed";
 import { ShareRow } from "@/components/ShareRow";
 import { godesiUrl } from "@/lib/sites";
 
@@ -28,9 +28,14 @@ export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
   const title = isNews(item) || isEvent(item) || isLead(item)
     ? item.title
     : item.name;
+  const unclaimed = isElite(item) && !item.claimed;
   const image = isLead(item)
     ? null
-    : picture(isNews(item) || isEvent(item) ? item.imageUrl : item.logoUrl);
+    : picture(
+        isNews(item) || isEvent(item) || isElite(item)
+          ? item.imageUrl
+          : item.logoUrl,
+      );
 
   const meta = isNews(item)
     ? [dateLabel(item.publishedAt), place(item.city, item.state), item.source]
@@ -38,7 +43,9 @@ export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
       ? [dateLabel(item.startsAt), item.venue, place(item.city, item.state)]
       : isLead(item)
         ? [dateLabel(item.postedAt), item.city, item.category]
-        : [place(item.city, item.state), item.subcategory ?? item.categorySlug];
+        : isElite(item)
+          ? [item.org, item.category, place(item.city, item.state)]
+          : [place(item.city, item.state), item.subcategory ?? item.categorySlug];
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
@@ -67,13 +74,24 @@ export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
         <p className="mt-auto pt-3 text-xs font-semibold text-slate-500">
           {meta.filter(Boolean).join(" · ")}
         </p>
+        {unclaimed ? (
+          <p className="mt-2 rounded-lg bg-amber-50 px-2 py-1 text-[11px] font-semibold text-amber-900">
+            Unclaimed profile — written from public record
+          </p>
+        ) : null}
         <a
-          href={item.url}
+          href={isElite(item) && unclaimed ? item.claimUrl : item.url}
           target="_blank"
           rel="noopener"
           className={`mt-2 text-xs font-bold ${accent}`}
         >
-          {isLead(item) ? "Respond on Godesi →" : "Read on Godesi →"}
+          {isLead(item)
+            ? "Respond on Godesi →"
+            : unclaimed
+              ? "View and claim on Godesi →"
+              : isElite(item)
+                ? "Full profile on Godesi →"
+                : "Read on Godesi →"}
         </a>
         <ShareRow url={item.url} title={title} image={image} />
       </div>
