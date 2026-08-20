@@ -1,4 +1,11 @@
-import { FeedItem, isElite, isEvent, isLead, isNews } from "@/lib/feed";
+import {
+  FeedItem,
+  isBusiness,
+  isElite,
+  isEvent,
+  isLead,
+  isNews,
+} from "@/lib/feed";
 import { ShareRow } from "@/components/ShareRow";
 import { godesiUrl } from "@/lib/sites";
 
@@ -36,6 +43,8 @@ export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
           ? item.imageUrl
           : item.logoUrl,
       );
+
+  const services = isBusiness(item) ? (item.services ?? []) : [];
 
   const meta = isNews(item)
     ? [dateLabel(item.publishedAt), place(item.city, item.state), item.source]
@@ -85,6 +94,18 @@ export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
             {item.teaser}
           </p>
         </a>
+        {services.length ? (
+          <ul className="mt-2 flex flex-wrap gap-1">
+            {services.slice(0, 5).map((service) => (
+              <li
+                key={service}
+                className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-700"
+              >
+                {service}
+              </li>
+            ))}
+          </ul>
+        ) : null}
         <p className="mt-auto pt-3 text-xs font-semibold text-slate-500">
           {meta.filter(Boolean).join(" · ")}
         </p>

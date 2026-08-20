@@ -1,4 +1,4 @@
-import { godesiUrl, type SiteConfig } from "@/lib/sites";
+import { DJ_SIGNUP, godesiUrl, type SiteConfig } from "@/lib/sites";
 
 const POST_LINKS: Record<string, { href: string; label: string }> = {
   desinewspaper: { href: "/news/report", label: "Report news" },
@@ -6,6 +6,7 @@ const POST_LINKS: Record<string, { href: string; label: string }> = {
   iba: { href: "/signup", label: "List your business" },
   itplacement: { href: "/leads/new", label: "Post a requirement" },
   itplacementservices: { href: "/signup", label: "List your consultancy" },
+  djswiki: { href: DJ_SIGNUP, label: "List your DJ service free" },
 };
 
 /** A site without its own call to action still gets a working header. */

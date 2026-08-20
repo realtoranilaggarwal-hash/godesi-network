@@ -40,6 +40,10 @@ export type BusinessItem = {
   country: string | null;
   categorySlug: string | null;
   subcategory: string | null;
+  /** Services the member ticked on their own card, shown as chips. */
+  services?: string[];
+  yearsExperience?: number | null;
+  verified?: boolean;
   claimed: boolean;
   featured: boolean;
   url: string;
@@ -102,6 +106,10 @@ export function isNews(item: FeedItem): item is NewsItem {
 
 export function isEvent(item: FeedItem): item is EventItem {
   return "startsAt" in item;
+}
+
+export function isBusiness(item: FeedItem): item is BusinessItem {
+  return "logoUrl" in item;
 }
 
 /**

@@ -40,6 +40,10 @@ const FESTIVAL_TYPES = [
   "Competition",
 ];
 
+/** Sign-up that lands straight on a new DJ & sound card on Godesi. */
+export const DJ_SIGNUP =
+  "/signup?next=%2Fdashboard%2Fprofile%3Fcategory%3Devents-wedding%26subcategory%3Devents-wedding-dj-and-sound%26type%3Dbusiness";
+
 export function godesiUrl(path = "") {
   return `${GODESI}${path}`;
 }
@@ -357,6 +361,104 @@ export const SITES: SiteConfig[] = [
       "Desi Who's Who lists South Asian Americans recognised in their field, and every profile lives on Godesi's GoDesi Elite directory.",
       "Profiles marked unclaimed were written by the Godesi desk from public record — an encyclopaedia entry, an official biography or a company page, credited and linked. No photograph or biography is copied, and no contact number is published.",
       "If a profile is yours, claim it on Godesi and it becomes yours to correct, complete and illustrate. If something is wrong, tell us and we will fix or remove it.",
+    ],
+  },
+  {
+    key: "djswiki",
+    domain: "djs.wiki",
+    name: "DJs.wiki",
+    tagline: "The world's first desi DJs directory",
+    description:
+      "DJs, dhol players, live bands, MCs and sound and lighting crews for weddings, sangeets, garba nights, corporate parties and club nights — every profile free and claimable on Godesi.",
+    emoji: "\u{1F3A7}",
+    gradient: "from-fuchsia-900 via-purple-800 to-indigo-900",
+    accent: "text-fuchsia-700",
+    kind: "businesses",
+    search: {
+      placeholder:
+        "Search a DJ, city or style — e.g. Bollywood DJ, dhol, Edison",
+      suggestions: ["Bollywood", "Bhangra", "Garba", "Dhol", "MC", "New York"],
+    },
+    sections: [
+      {
+        heading: "DJs & sound",
+        blurb:
+          "Wedding, sangeet, reception, garba and club DJs with their own rig.",
+        query: {
+          kind: "businesses",
+          subcategory: "events-wedding-dj-and-sound",
+          limit: "18",
+        },
+        moreHref: "/categories/events-wedding-dj-and-sound",
+        moreLabel: "All DJs on Godesi",
+      },
+      {
+        heading: "Dhol & baraat",
+        blurb: "Dhol players, baraat processions and trolley sound.",
+        query: {
+          kind: "businesses",
+          subcategory: "events-wedding-dhol-and-baraat",
+          limit: "9",
+        },
+        moreHref: "/categories/events-wedding-dhol-and-baraat",
+        moreLabel: "All dhol & baraat",
+      },
+      {
+        heading: "Live bands & orchestras",
+        blurb: "Bands, Indian orchestras and instrumentalists.",
+        query: {
+          kind: "businesses",
+          subcategory: "events-wedding-live-bands",
+          limit: "9",
+        },
+        moreHref: "/categories/events-wedding-live-bands",
+        moreLabel: "All live bands",
+      },
+      {
+        heading: "Singers, MCs & artists",
+        blurb: "Anchors, hosts, singers, dancers and stage acts.",
+        query: {
+          kind: "businesses",
+          subcategory: "events-wedding-anchors-and-artists",
+          limit: "9",
+        },
+        moreHref: "/categories/events-wedding-anchors-and-artists",
+        moreLabel: "All anchors & artists",
+      },
+      {
+        heading: "Stage, sound & lighting rentals",
+        blurb: "Uplighting, LED walls, projectors, mics and staging.",
+        query: {
+          kind: "businesses",
+          subcategory: "events-wedding-stage-and-sound-rentals",
+          limit: "9",
+        },
+        moreHref: "/categories/events-wedding-stage-and-sound-rentals",
+        moreLabel: "All stage & sound rentals",
+      },
+      {
+        heading: "Couples and hosts looking for a DJ",
+        blurb: "Open requirements you can quote for today.",
+        query: { kind: "leads", category: "events-wedding", limit: "9" },
+        moreHref: "/leads",
+        moreLabel: "All requirements on Godesi",
+      },
+      {
+        heading: "DJ nights & desi parties coming up",
+        blurb: "Where the community is dancing this month.",
+        query: {
+          kind: "events",
+          type: "Music / DJ night,Dance / Garba / Bhangra,Concert / Live show,Party / Social",
+          limit: "9",
+        },
+        moreHref: "/events",
+        moreLabel: "All events on Godesi",
+      },
+    ],
+    about: [
+      "DJs.wiki is a free directory of desi DJs, dhol players, bands, MCs and sound crews, and every profile lives on Godesi's wedding and event marketplace.",
+      "List once on Godesi and your profile appears here automatically — free for the first year, with your services, music languages, equipment, packages, travel radius, videos and photos.",
+      "Marketing and search optimisation are on us: we promote the directory so couples and event hosts find you. Enquiries come to you directly, and Godesi takes no commission on your bookings.",
     ],
   },
 ];
