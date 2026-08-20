@@ -37,6 +37,11 @@ const CTA: Record<string, { href: string; label: string; note: string }> = {
     label: "🎧 Get your free DJs.wiki listing",
     note: "Free for the first year · list once on Godesi and your profile appears here",
   },
+  godesiwiki: {
+    href: "/signup?next=%2Fdashboard%2Fprofile%3Ftype%3Dbusiness",
+    label: "🌐 Get your free GoDesi.wiki listing",
+    note: "Free for the first year · list once on Godesi.com and your page appears here",
+  },
   itplacementservices: {
     href: "/signup",
     label: "🏢 List your consultancy free",
@@ -117,6 +122,51 @@ export default function HomePage() {
               See the DJ section on Godesi
             </a>
           </div>
+        </section>
+      ) : null}
+
+      {site.key === "godesiwiki" ? (
+        <section className="rounded-3xl border-2 border-amber-300 bg-white p-6">
+          <p className="text-xs font-black uppercase tracking-wide text-amber-700">
+            Free for 1 year
+          </p>
+          <h2 className="mt-1 text-2xl font-black">
+            Everything you list on Godesi.com is published here — free
+          </h2>
+          <p className="mt-2 max-w-3xl text-sm text-slate-600">
+            Fill in one card on Godesi.com — your categories, services and
+            products, languages, service areas, working hours, price range,
+            special offers, photos and videos — and the same page appears on
+            GoDesi.wiki. One profile, two platforms, no fee for the first year.
+            The marketing and search optimisation are on us, and enquiries come
+            straight to you.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <a
+              href={godesiUrl(cta.href)}
+              target="_blank"
+              rel="noopener"
+              className="rounded-xl bg-amber-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-amber-700"
+            >
+              List your business free
+            </a>
+            <a
+              href={godesiUrl("/categories")}
+              target="_blank"
+              rel="noopener"
+              className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-bold text-slate-700 hover:bg-slate-50"
+            >
+              Browse every category on Godesi
+            </a>
+          </div>
+          {/* The offer poster, shown whole so the small print stays readable. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={godesiUrl("/godesi-marketing.jpg")}
+            alt="Free marketing, free SEO and a free GoDesi.wiki membership with a Godesi.com listing"
+            loading="lazy"
+            className="mt-5 w-full rounded-2xl border border-amber-200"
+          />
         </section>
       ) : null}
 

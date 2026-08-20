@@ -7,6 +7,7 @@ const POST_LINKS: Record<string, { href: string; label: string }> = {
   itplacement: { href: "/leads/new", label: "Post a requirement" },
   itplacementservices: { href: "/signup", label: "List your consultancy" },
   djswiki: { href: DJ_SIGNUP, label: "List your DJ service free" },
+  godesiwiki: { href: "/signup", label: "List your business free" },
 };
 
 /** A site without its own call to action still gets a working header. */
