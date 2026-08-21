@@ -7,6 +7,7 @@ const POST_LINKS: Record<string, { href: string; label: string }> = {
   itplacement: { href: "/leads/new", label: "Post a requirement" },
   itplacementservices: { href: "/signup", label: "List your consultancy" },
   djswiki: { href: DJ_SIGNUP, label: "List your DJ service free" },
+  eventringer: { href: "/events/new", label: "List your event free" },
 };
 
 /** A site without its own call to action still gets a working header. */
@@ -23,6 +24,14 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
           {site.name}
         </a>
         <nav className="ml-auto flex flex-wrap items-center gap-2 text-sm font-semibold">
+          {site.eventPages ? (
+            <a
+              href="/events"
+              className="rounded-full px-3 py-1.5 hover:bg-white/15"
+            >
+              All events
+            </a>
+          ) : null}
           <a href="/about" className="rounded-full px-3 py-1.5 hover:bg-white/15">
             About
           </a>
