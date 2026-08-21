@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { AdSlot } from "@/components/AdSlot";
+import { EventGrid } from "@/components/EventGrid";
 import { FeedSection } from "@/components/FeedSection";
+import { fetchEvents } from "@/lib/events";
 import { SiteSearch } from "@/components/SiteSearch";
 import { godesiUrl, siteForHost } from "@/lib/sites";
 
@@ -25,7 +27,7 @@ export function generateMetadata({
  * Searches every row the site already shows, but filtered by the visitor's
  * words — the same Godesi feed, no second index to keep in sync.
  */
-export default function SearchPage({
+export default async function SearchPage({
   searchParams,
 }: {
   searchParams: { q?: string };
@@ -36,6 +38,11 @@ export default function SearchPage({
     placeholder: `Search ${site.name}`,
     suggestions: [],
   };
+  // On an event site the results are this site's own pages, not teasers.
+  const events =
+    site.eventPages && query
+      ? (await fetchEvents({ q: query, limit: "36" })).items
+      : [];
 
   return (
     <main className="mx-auto max-w-6xl space-y-8 px-4 py-6">
@@ -52,7 +59,16 @@ export default function SearchPage({
         />
       </section>
 
-      {query ? (
+      {site.eventPages ? (
+        query ? (
+          <EventGrid events={events} accent={site.accent} />
+        ) : (
+          <p className="text-sm text-slate-600">
+            Type a city, festival, artist or venue above to search every
+            upcoming event.
+          </p>
+        )
+      ) : query ? (
         site.sections.map((section, index) => (
           <div key={section.heading} className="space-y-8">
             <FeedSection
