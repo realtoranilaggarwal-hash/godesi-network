@@ -6,6 +6,7 @@ import { AdSlot } from "@/components/AdSlot";
 import { EventGrid } from "@/components/EventGrid";
 import { ShareRow } from "@/components/ShareRow";
 import { faqs, intro } from "@/lib/eventCopy";
+import { externalUrl } from "@/lib/externalUrl";
 import {
   cityPath,
   dateLabel,
@@ -132,9 +133,9 @@ export default async function EventPage({
                   ? "Reserve a free seat on Godesi.com"
                   : "Get tickets on Godesi.com"}
           </a>
-          {!over && event.mapsUrl ? (
+          {!over && externalUrl(event.mapsUrl) ? (
             <a
-              href={event.mapsUrl}
+              href={externalUrl(event.mapsUrl)!}
               target="_blank"
               rel="noopener nofollow"
               className="rounded-xl border border-slate-300 px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50"
@@ -184,9 +185,9 @@ export default async function EventPage({
           ) : null}
           {event.organizer ? (
             <Fact label="Organiser">
-              {event.organizerUrl ? (
+              {externalUrl(event.organizerUrl) ? (
                 <a
-                  href={event.organizerUrl}
+                  href={externalUrl(event.organizerUrl)!}
                   target="_blank"
                   rel="noopener"
                   className="underline"
@@ -308,11 +309,11 @@ export default async function EventPage({
         </section>
       ) : null}
 
-      {event.videoUrl ? (
+      {externalUrl(event.videoUrl) ? (
         <section className="space-y-3">
           <h2 className="text-xl font-black">Promo video</h2>
           <a
-            href={event.videoUrl}
+            href={externalUrl(event.videoUrl)!}
             target="_blank"
             rel="noopener nofollow"
             className={`text-sm font-bold ${site.accent}`}
@@ -459,7 +460,7 @@ function eventSchema(
           ? {
               "@type": "Organization",
               name: event.organizer,
-              url: event.organizerUrl ?? event.ticketUrl,
+              url: externalUrl(event.organizerUrl) ?? event.ticketUrl,
             }
           : undefined,
         performer: event.speakers.length
