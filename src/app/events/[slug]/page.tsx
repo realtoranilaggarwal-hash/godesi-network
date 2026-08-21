@@ -11,6 +11,7 @@ import {
   dateLabel,
   fetchEvent,
   fetchEvents,
+  hasEnded,
   picture,
   place,
   priceLabel,
@@ -39,6 +40,7 @@ export async function generateMetadata({
   return {
     title,
     description,
+    robots: hasEnded(event) ? { index: false } : undefined,
     // Self-referencing: this page is the canonical version of itself, which is
     // what lets Eventringer rank instead of only feeding godesi.com.
     alternates: { canonical: `https://${site.domain}/events/${event.slug}` },
@@ -62,6 +64,7 @@ export default async function EventPage({
   if (!event) notFound();
 
   const image = picture(event.imageUrl);
+  const over = hasEnded(event);
   const questions = faqs(event);
   const [nearby, sameType] = await Promise.all([
     fetchEvents({ city: event.city, limit: "7" }),
@@ -86,9 +89,13 @@ export default async function EventPage({
           Events
         </Link>{" "}
         ›{" "}
-        <Link href={cityPath(event.city)} className="hover:underline">
-          {place(event)}
-        </Link>{" "}
+        {over ? (
+          <span>{place(event)}</span>
+        ) : (
+          <Link href={cityPath(event.city)} className="hover:underline">
+            {place(event)}
+          </Link>
+        )}{" "}
         › <span className="text-slate-700">{event.title}</span>
       </nav>
 
@@ -111,18 +118,20 @@ export default async function EventPage({
         ) : null}
         <div className="flex flex-wrap items-center gap-2">
           <a
-            href={event.ticketUrl}
+            href={over ? godesiUrl("/events") : event.ticketUrl}
             target="_blank"
             rel="noopener"
             className="rounded-xl bg-violet-700 px-5 py-3 text-sm font-bold text-white hover:bg-violet-800"
           >
-            {event.soldOut
-              ? "Sold out — check for returns on Godesi"
-              : priceLabel(event) === "Free entry"
-                ? "Reserve a free seat on Godesi.com"
-                : "Get tickets on Godesi.com"}
+            {over
+              ? "See upcoming events on Godesi.com"
+              : event.soldOut
+                ? "Sold out — check for returns on Godesi"
+                : priceLabel(event) === "Free entry"
+                  ? "Reserve a free seat on Godesi.com"
+                  : "Get tickets on Godesi.com"}
           </a>
-          {event.mapsUrl ? (
+          {!over && event.mapsUrl ? (
             <a
               href={event.mapsUrl}
               target="_blank"
@@ -133,10 +142,17 @@ export default async function EventPage({
             </a>
           ) : null}
         </div>
-        <p className="text-xs text-slate-500">
-          Tickets are sold by the organiser on Godesi.com. Eventringer lists the
-          event; payment, seats and entry passes are handled there.
-        </p>
+        {over ? (
+          <p className="rounded-2xl bg-slate-100 p-4 text-sm font-semibold text-slate-700">
+            This event is over. Tickets are no longer available — browse
+            what&apos;s coming up next on {site.name}.
+          </p>
+        ) : (
+          <p className="text-xs text-slate-500">
+            Tickets are sold by the organiser on Godesi.com. Eventringer lists
+            the event; payment, seats and entry passes are handled there.
+          </p>
+        )}
         <ShareRow
           url={`https://${site.domain}/events/${event.slug}`}
           title={event.title}
@@ -462,16 +478,19 @@ function eventSchema(
               name: speaker.name,
             }))
           : undefined,
-        offers: {
-          "@type": "Offer",
-          price: cheapest,
-          priceCurrency: event.currency || "USD",
-          availability: event.soldOut
-            ? "https://schema.org/SoldOut"
-            : "https://schema.org/InStock",
-          url: event.ticketUrl,
-          validFrom: event.createdAt,
-        },
+        // A finished event keeps its markup, minus the bookable offer.
+        offers: hasEnded(event)
+          ? undefined
+          : {
+              "@type": "Offer",
+              price: cheapest,
+              priceCurrency: event.currency || "USD",
+              availability: event.soldOut
+                ? "https://schema.org/SoldOut"
+                : "https://schema.org/InStock",
+              url: event.ticketUrl,
+              validFrom: event.createdAt,
+            },
         isAccessibleForFree: cheapest === 0,
         publisher: { "@type": "Organization", name: siteName },
       },

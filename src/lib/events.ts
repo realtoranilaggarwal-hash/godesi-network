@@ -112,6 +112,14 @@ export function typePath(type: string) {
   return `/events/type/${slugify(type)}`;
 }
 
+/**
+ * A finished event keeps its page (people still search for it) but must not be
+ * indexed or advertised as bookable, and it is gone from every listing.
+ */
+export function hasEnded(event: PublicEvent) {
+  return new Date(event.endsAt ?? event.startsAt).getTime() < Date.now();
+}
+
 export function place(event: {
   city: string;
   state: string | null;
