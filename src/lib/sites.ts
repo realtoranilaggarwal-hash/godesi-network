@@ -613,6 +613,87 @@ export const SITES: SiteConfig[] = [
       "Marketing and search optimisation are on us: we promote the directory so customers find you. Enquiries come straight to you, and Godesi takes no commission on your work.",
     ],
   },
+  {
+    key: "eventringer",
+    domain: "eventringer.com",
+    name: "EventRinger",
+    tagline: "Every desi event, in one ring",
+    description:
+      "Melas, garba nights, concerts, pujas, workshops, expos, job fairs and community programmes near you — listed free by organisers on Godesi, with tickets booked online.",
+    emoji: "\u{1F514}",
+    gradient: "from-rose-600 via-orange-500 to-amber-400",
+    accent: "text-rose-600",
+    kind: "events",
+    search: {
+      placeholder: "Search an event, city or type — e.g. garba, Edison, expo",
+      suggestions: ["Garba", "Concert", "Mela", "Workshop", "Edison", "Dallas"],
+    },
+    sections: [
+      {
+        heading: "Happening soon",
+        blurb: "The next events across the community, wherever you are.",
+        query: { kind: "events", limit: "18" },
+        moreHref: "/events",
+        moreLabel: "All events on Godesi",
+      },
+      {
+        heading: "Festivals, melas & garba nights",
+        blurb: "Navratri, Diwali, Holi, parades and cultural shows.",
+        query: {
+          kind: "events",
+          type: FESTIVAL_TYPES.join(","),
+          limit: "9",
+        },
+        moreHref: "/events",
+        moreLabel: "More festival events",
+      },
+      {
+        heading: "Concerts, comedy & shows",
+        blurb: "Touring artists, stand-up nights, theatre and film screenings.",
+        query: {
+          kind: "events",
+          type: "Concert / Live show,Music / DJ night,Comedy show,Theatre / Drama,Film screening",
+          limit: "9",
+        },
+        moreHref: "/events",
+        moreLabel: "More shows",
+      },
+      {
+        heading: "Business, jobs & learning",
+        blurb: "Conferences, expos, job fairs, workshops and classes.",
+        query: {
+          kind: "events",
+          type: "Conference,Workshop,Seminar / Webinar,Class / Course,Meetup / Networking,Business / Startup event,Job fair / Career event,Exhibition / Expo / Trade show",
+          limit: "9",
+        },
+        moreHref: "/events",
+        moreLabel: "More business events",
+      },
+      {
+        heading: "Temple programmes & satsang",
+        blurb: "Pujas, kirtans, katha and religious ceremonies.",
+        query: {
+          kind: "events",
+          type: "Puja / Satsang / Kirtan,Religious / Cultural ceremony",
+          limit: "9",
+        },
+        moreHref: "/events",
+        moreLabel: "More religious events",
+      },
+      {
+        heading: "Who to hire for your own event",
+        blurb: "DJs, caterers, decorators, priests and venues.",
+        query: { kind: "businesses", category: "events-wedding", limit: "9" },
+        moreHref: "/categories/events-wedding",
+        moreLabel: "All event services",
+      },
+    ],
+    about: [
+      "EventRinger is a free events board for the desi diaspora, published straight from Godesi's community events board.",
+      "Organisers post an event once on Godesi — free, with categories, venue, timings, photos, a video and tickets — and it appears here automatically, linking back to the Godesi page where seats are booked.",
+      "Running a mela, garba night, concert, expo or temple programme? Post it free on Godesi and reach families in your city.",
+    ],
+  },
 ];
 
 const BY_DOMAIN = new Map(SITES.map((site) => [site.domain, site]));
