@@ -353,9 +353,7 @@ export default async function EventPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            eventSchema(event, site.domain, site.name, questions),
-          ),
+          __html: jsonLd(eventSchema(event, site.domain, site.name, questions)),
         }}
       />
     </main>
@@ -377,6 +375,19 @@ function Fact({
       <dd className="text-slate-800">{children}</dd>
     </div>
   );
+}
+
+/**
+ * Organisers write the event text, so a title containing `</script>` would
+ * otherwise close the tag and run as markup: `<` and `/` survive JSON.stringify.
+ */
+function jsonLd(value: unknown) {
+  return JSON.stringify(value)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
 }
 
 function dedupe(events: PublicEvent[]) {
@@ -485,9 +496,7 @@ function eventSchema(
             "@type": "ListItem",
             position: 2,
             name: place(event),
-            item: `https://${domain}/events/in/${event.city
-              .toLowerCase()
-              .replace(/[^a-z0-9]+/g, "-")}`,
+            item: `https://${domain}${cityPath(event.city)}`,
           },
           { "@type": "ListItem", position: 3, name: event.title, item: url },
         ],
