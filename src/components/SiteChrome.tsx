@@ -25,12 +25,20 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
         </a>
         <nav className="ml-auto flex flex-wrap items-center gap-2 text-sm font-semibold">
           {site.eventPages ? (
-            <a
-              href="/events"
-              className="rounded-full px-3 py-1.5 hover:bg-white/15"
-            >
-              All events
-            </a>
+            <>
+              <a
+                href="/events"
+                className="rounded-full px-3 py-1.5 hover:bg-white/15"
+              >
+                All events
+              </a>
+              <a
+                href="/list-your-event"
+                className="rounded-full px-3 py-1.5 hover:bg-white/15"
+              >
+                For organisers
+              </a>
+            </>
           ) : null}
           <a href="/about" className="rounded-full px-3 py-1.5 hover:bg-white/15">
             About

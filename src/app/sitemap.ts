@@ -27,11 +27,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       fetchEventFacets(),
     ]);
 
-    entries.push({
-      url: `${base}/events`,
-      changeFrequency: "daily",
-      priority: 0.9,
-    });
+    entries.push(
+      { url: `${base}/events`, changeFrequency: "daily", priority: 0.9 },
+      {
+        url: `${base}/list-your-event`,
+        changeFrequency: "monthly",
+        priority: 0.7,
+      },
+    );
 
     for (const city of cities) {
       entries.push({

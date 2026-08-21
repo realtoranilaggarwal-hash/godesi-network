@@ -18,6 +18,7 @@ import {
   typePath,
   type PublicEvent,
 } from "@/lib/events";
+import { jsonLd } from "@/lib/jsonLd";
 import { eventSiteForHost, godesiUrl } from "@/lib/sites";
 
 export const revalidate = 600;
@@ -356,14 +357,12 @@ export default async function EventPage({
           List it free on Godesi.com — sell tickets, collect enquiries and it
           gets a page like this one on {site.name} automatically.
         </p>
-        <a
-          href={godesiUrl("/events/new")}
-          target="_blank"
-          rel="noopener"
+        <Link
+          href="/list-your-event"
           className={`mt-3 inline-block text-sm font-bold ${site.accent}`}
         >
-          List your event free →
-        </a>
+          See the fees and list your event free →
+        </Link>
       </section>
 
       <script
@@ -391,19 +390,6 @@ function Fact({
       <dd className="text-slate-800">{children}</dd>
     </div>
   );
-}
-
-/**
- * Organisers write the event text, so a title containing `</script>` would
- * otherwise close the tag and run as markup: `<` and `/` survive JSON.stringify.
- */
-function jsonLd(value: unknown) {
-  return JSON.stringify(value)
-    .replace(/</g, "\\u003c")
-    .replace(/>/g, "\\u003e")
-    .replace(/&/g, "\\u0026")
-    .replace(/\u2028/g, "\\u2028")
-    .replace(/\u2029/g, "\\u2029");
 }
 
 function dedupe(events: PublicEvent[]) {

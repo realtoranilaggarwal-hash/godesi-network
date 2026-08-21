@@ -88,6 +88,14 @@ export default async function HomePage() {
             Explore Godesi.com
           </a>
         </div>
+        {site.eventPages ? (
+          <Link
+            href="/list-your-event"
+            className="mt-3 inline-block text-sm font-bold text-white underline"
+          >
+            Organising something? See the fees and how listing works →
+          </Link>
+        ) : null}
         <p className="mt-2 text-xs text-white/80">{cta.note}</p>
         {site.search ? (
           <SiteSearch
@@ -174,6 +182,33 @@ export default async function HomePage() {
               </li>
             ))}
           </ul>
+        </section>
+      ) : null}
+
+      {site.eventPages ? (
+        <section className="rounded-3xl border border-slate-200 bg-white p-6">
+          <h2 className="text-xl font-black">
+            Organising an event? Post it once, get found everywhere
+          </h2>
+          <p className="mt-2 max-w-3xl text-sm text-slate-600">
+            Listing is free and unlimited on Godesi.com, tickets are sold there
+            with QR check-in, and the event automatically gets a full page here
+            on {site.name} — its own city page, its own event-type page and its
+            own search results.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-3 text-sm font-bold">
+            <Link href="/list-your-event" className={site.accent}>
+              Fees, plans and where you get listed →
+            </Link>
+            <a
+              href={godesiUrl("/events/new")}
+              target="_blank"
+              rel="noopener"
+              className={site.accent}
+            >
+              Post your event free →
+            </a>
+          </div>
         </section>
       ) : null}
 
