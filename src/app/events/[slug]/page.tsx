@@ -339,11 +339,15 @@ export default async function EventPage({
           More desi events in {place(event)}
         </h2>
         <EventGrid events={others} accent={site.accent} />
+        {/* The hubs are built from the upcoming-event facets, so a city or type
+            with nothing coming up has no page to link to. */}
         <div className="flex flex-wrap gap-3 text-sm font-bold">
-          <Link href={cityPath(event.city)} className={site.accent}>
-            All events in {event.city} →
-          </Link>
-          {event.eventType ? (
+          {nearby.total ? (
+            <Link href={cityPath(event.city)} className={site.accent}>
+              All events in {event.city} →
+            </Link>
+          ) : null}
+          {event.eventType && sameType.total ? (
             <Link href={typePath(event.eventType)} className={site.accent}>
               All {event.eventType.toLowerCase()} events →
             </Link>
