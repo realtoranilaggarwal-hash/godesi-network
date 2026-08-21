@@ -1,5 +1,8 @@
+import Link from "next/link";
 import { headers } from "next/headers";
 import { AdSlot } from "@/components/AdSlot";
+import { EventRowSection } from "@/components/EventGrid";
+import { cityPath, fetchEventFacets, typePath } from "@/lib/events";
 import { FeedSection } from "@/components/FeedSection";
 import { SiteSearch } from "@/components/SiteSearch";
 import { DJ_SIGNUP, godesiUrl, siteForHost } from "@/lib/sites";
@@ -27,6 +30,11 @@ const CTA: Record<string, { href: string; label: string; note: string }> = {
     label: "📣 Post an IT requirement free",
     note: "Employers and consultancies post roles; candidates respond free",
   },
+  eventringer: {
+    href: "/events/new",
+    label: "🎟️ List your event free",
+    note: "Free listing and ticketing · your event gets its own page here",
+  },
   desiwhoswho: {
     href: "/desi-elite/apply",
     label: "🏆 Nominate someone, or apply yourself",
@@ -44,8 +52,13 @@ const CTA: Record<string, { href: string; label: string; note: string }> = {
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
   const site = siteForHost(headers().get("host"));
+  // Event sites publish their own pages, so their rows link inwards and the
+  // page ends with city and type hubs that give those pages internal links.
+  const facets = site.eventPages
+    ? await fetchEventFacets()
+    : { cities: [], types: [] };
   const cta = CTA[site.key] ?? {
     href: "/signup",
     label: "Post on Godesi",
@@ -75,6 +88,14 @@ export default function HomePage() {
             Explore Godesi.com
           </a>
         </div>
+        {site.eventPages ? (
+          <Link
+            href="/list-your-event"
+            className="mt-3 inline-block text-sm font-bold text-white underline"
+          >
+            Organising something? See the fees and how listing works →
+          </Link>
+        ) : null}
         <p className="mt-2 text-xs text-white/80">{cta.note}</p>
         {site.search ? (
           <SiteSearch
@@ -115,6 +136,77 @@ export default function HomePage() {
               className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-bold text-slate-700 hover:bg-slate-50"
             >
               See the DJ section on Godesi
+            </a>
+          </div>
+        </section>
+      ) : null}
+
+      {(site.rows ?? []).map((row, index) => (
+        <div key={row.heading} className="space-y-8">
+          <EventRowSection site={site} row={row} />
+          {index === 0 ? <AdSlot accent={site.accent} /> : null}
+        </div>
+      ))}
+
+      {facets.cities.length ? (
+        <section className="space-y-3">
+          <h2 className="text-xl font-black">Events by city</h2>
+          <ul className="flex flex-wrap gap-2">
+            {facets.cities.slice(0, 40).map((city) => (
+              <li key={`${city.city}-${city.state}`}>
+                <Link
+                  href={cityPath(city.city)}
+                  className="rounded-full border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                >
+                  {[city.city, city.state].filter(Boolean).join(", ")} (
+                  {city.count})
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {facets.types.length ? (
+        <section className="space-y-3">
+          <h2 className="text-xl font-black">Events by type</h2>
+          <ul className="flex flex-wrap gap-2">
+            {facets.types.map((type) => (
+              <li key={type.type}>
+                <Link
+                  href={typePath(type.type)}
+                  className="rounded-full border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                >
+                  {type.type} ({type.count})
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {site.eventPages ? (
+        <section className="rounded-3xl border border-slate-200 bg-white p-6">
+          <h2 className="text-xl font-black">
+            Organising an event? Post it once, get found everywhere
+          </h2>
+          <p className="mt-2 max-w-3xl text-sm text-slate-600">
+            Listing is free and unlimited on Godesi.com, tickets are sold there
+            with QR check-in, and the event automatically gets a full page here
+            on {site.name} — its own city page, its own event-type page and its
+            own search results.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-3 text-sm font-bold">
+            <Link href="/list-your-event" className={site.accent}>
+              Fees, plans and where you get listed →
+            </Link>
+            <a
+              href={godesiUrl("/events/new")}
+              target="_blank"
+              rel="noopener"
+              className={site.accent}
+            >
+              Post your event free →
             </a>
           </div>
         </section>

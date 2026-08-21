@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+
 export type Section = {
   heading: string;
   blurb: string;
@@ -6,6 +8,17 @@ export type Section = {
   /** Where "see everything" points on godesi.com. */
   moreHref: string;
   moreLabel: string;
+};
+
+/** A row of full event pages hosted on this site. */
+export type EventRow = {
+  heading: string;
+  blurb: string;
+  /** Query for Godesi's /api/events, e.g. `{ city: "Edison", limit: "9" }`. */
+  query: Record<string, string>;
+  /** Internal landing page holding the whole set. */
+  moreHref?: string;
+  moreLabel?: string;
 };
 
 export type SiteConfig = {
@@ -19,6 +32,14 @@ export type SiteConfig = {
   gradient: string;
   accent: string;
   kind: "news" | "events" | "businesses" | "leads" | "elite";
+  /**
+   * The site publishes full event pages of its own (self-canonical, with
+   * schema.org markup) instead of teasers that bounce to godesi.com, so it
+   * earns search rankings itself and sends buyers to Godesi to check out.
+   */
+  eventPages?: boolean;
+  /** Rows on an event site's home page, read from Godesi's /api/events. */
+  rows?: EventRow[];
   sections: Section[];
   about: string[];
   /** Hero search: shown when the site is a lookup tool rather than a feed. */
@@ -43,6 +64,16 @@ const FESTIVAL_TYPES = [
 /** Sign-up that lands straight on a new DJ & sound card on Godesi. */
 export const DJ_SIGNUP =
   "/signup?next=%2Fdashboard%2Fprofile%3Fcategory%3Devents-wedding%26subcategory%3Devents-wedding-dj-and-sound%26type%3Dbusiness";
+
+/**
+ * Routes that publish full event pages only exist on the event sites; on the
+ * other domains of this app they must not resolve at all.
+ */
+export function eventSiteForHost(host?: string | null): SiteConfig {
+  const site = siteForHost(host);
+  if (!site.eventPages) notFound();
+  return site;
+}
 
 export function godesiUrl(path = "") {
   return `${GODESI}${path}`;
@@ -460,6 +491,72 @@ export const SITES: SiteConfig[] = [
       "List once on Godesi and your profile appears here automatically — free for the first year, with your services, music languages, equipment, packages, travel radius, videos and photos.",
       "Marketing and search optimisation are on us: we promote the directory so couples and event hosts find you. Enquiries come to you directly, and Godesi takes no commission on your bookings.",
     ],
+  },
+  {
+    key: "eventringer",
+    domain: "eventringer.com",
+    name: "Eventringer",
+    tagline: "Every desi event near you — festivals, concerts, garba and meetups",
+    description:
+      "Eventringer lists desi community events across the USA and India with dates, venues, line-ups, ticket prices and directions. Tickets are booked on Godesi.com.",
+    emoji: "🎟️",
+    gradient: "from-violet-700 via-fuchsia-600 to-orange-500",
+    accent: "text-violet-700",
+    kind: "events",
+    eventPages: true,
+    rows: [
+      {
+        heading: "Happening soon",
+        blurb: "The next events on the community calendar.",
+        query: { limit: "12" },
+        moreHref: "/events",
+        moreLabel: "Full calendar",
+      },
+      {
+        heading: "Festivals & melas",
+        blurb: "Diwali melas, Navratri garba, Holi and parades.",
+        query: { type: FESTIVAL_TYPES.join(","), limit: "9" },
+        moreHref: "/events",
+        moreLabel: "Full calendar",
+      },
+      {
+        heading: "Concerts & DJ nights",
+        blurb: "Live shows, playback singers, DJ nights and parties.",
+        query: {
+          type: "Concert,Concert / Live show,Music / DJ night,Party,Party / Social",
+          limit: "9",
+        },
+        moreHref: "/events",
+        moreLabel: "Full calendar",
+      },
+      {
+        heading: "Workshops, talks & meetups",
+        blurb: "Conferences, career sessions, classes and community meets.",
+        query: {
+          type: "Conference,Workshop,Seminar / Talk,Meetup / Networking,Webinar",
+          limit: "9",
+        },
+        moreHref: "/events",
+        moreLabel: "Full calendar",
+      },
+    ],
+    sections: [],
+    about: [
+      "Eventringer is a free, searchable calendar of South Asian community events — festivals, concerts, garba nights, pujas, conferences, workshops and family days out.",
+      "Every event is published by its own organiser on Godesi.com, our community platform, and gets a full page here with the schedule, line-up, venue, directions and ticket prices so you can decide before you travel.",
+      "Booking always happens on Godesi.com, where the organiser manages seats, payments and your tickets — Eventringer is the place people find the event in the first place.",
+      "Organising something? List it free on Godesi and it appears here automatically, with its own page, sitemap entry and search-engine markup.",
+    ],
+    search: {
+      placeholder: "Search events by city, festival or artist",
+      suggestions: [
+        "Diwali mela",
+        "Garba night",
+        "Edison NJ",
+        "Bollywood concert",
+        "Kids workshop",
+      ],
+    },
   },
 ];
 
