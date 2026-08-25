@@ -33,11 +33,20 @@ export default async function VenuesIndex() {
           Venues hosting desi events
         </h1>
         <p className="max-w-3xl text-slate-600">
-          {venues.length} {venues.length === 1 ? "venue" : "venues"} across{" "}
-          {cities.size} {cities.size === 1 ? "city" : "cities"} have an upcoming
-          community event — banquet halls, temples, community centres, school
-          auditoriums, theatres and clubs. Pick a venue to see everything coming
-          up there, with directions and ticket prices.
+          {venues.length ? (
+            <>
+              {venues.length} {venues.length === 1 ? "venue" : "venues"} across{" "}
+              {cities.size} {cities.size === 1 ? "city" : "cities"} have an
+              upcoming community event: banquet halls, temples, community
+              centres, school auditoriums, theatres and clubs. Pick a venue to
+              see everything coming up there, with directions and ticket prices.
+            </>
+          ) : (
+            <>
+              Banquet halls, temples, community centres, theatres and clubs get
+              their own page here, listing everything coming up at them.
+            </>
+          )}
         </p>
       </header>
 

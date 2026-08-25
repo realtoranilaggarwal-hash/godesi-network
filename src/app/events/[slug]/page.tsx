@@ -6,6 +6,7 @@ import { AdSlot } from "@/components/AdSlot";
 import { EventGrid } from "@/components/EventGrid";
 import { ShareRow } from "@/components/ShareRow";
 import { faqs, intro } from "@/lib/eventCopy";
+import { externalUrl } from "@/lib/externalUrl";
 import {
   cityPath,
   dateLabel,
@@ -68,6 +69,10 @@ export default async function EventPage({
   const image = picture(event.imageUrl);
   const over = hasEnded(event);
   const questions = faqs(event);
+  // Organiser-supplied, so only http(s) is ever rendered as a link.
+  const maps = externalUrl(event.mapsUrl);
+  const organiserSite = externalUrl(event.organizerUrl);
+  const video = externalUrl(event.videoUrl);
   const [nearby, sameType] = await Promise.all([
     fetchEvents({ city: event.city, limit: "7" }),
     event.eventType
@@ -133,9 +138,9 @@ export default async function EventPage({
                   ? "Reserve a free seat on Godesi.com"
                   : "Get tickets on Godesi.com"}
           </a>
-          {!over && event.mapsUrl ? (
+          {!over && maps ? (
             <a
-              href={event.mapsUrl}
+              href={maps}
               target="_blank"
               rel="noopener nofollow"
               className="rounded-xl border border-slate-300 px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50"
@@ -190,9 +195,9 @@ export default async function EventPage({
           ) : null}
           {event.organizer ? (
             <Fact label="Organiser">
-              {event.organizerUrl ? (
+              {organiserSite ? (
                 <a
-                  href={event.organizerUrl}
+                  href={organiserSite}
                   target="_blank"
                   rel="noopener"
                   className="underline"
@@ -234,9 +239,9 @@ export default async function EventPage({
             <Link href={venuePath(event)} className={site.accent}>
               Everything on at {event.venue} →
             </Link>
-            {event.mapsUrl ? (
+            {maps ? (
               <a
-                href={event.mapsUrl}
+                href={maps}
                 target="_blank"
                 rel="noopener nofollow"
                 className={site.accent}
@@ -343,11 +348,11 @@ export default async function EventPage({
         </section>
       ) : null}
 
-      {event.videoUrl ? (
+      {video ? (
         <section className="space-y-3">
           <h2 className="text-xl font-black">Promo video</h2>
           <a
-            href={event.videoUrl}
+            href={video}
             target="_blank"
             rel="noopener nofollow"
             className={`text-sm font-bold ${site.accent}`}
@@ -494,7 +499,7 @@ function eventSchema(
           ? {
               "@type": "Organization",
               name: event.organizer,
-              url: event.organizerUrl ?? event.ticketUrl,
+              url: externalUrl(event.organizerUrl) ?? event.ticketUrl,
             }
           : undefined,
         performer: event.speakers.length
