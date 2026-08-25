@@ -6,6 +6,7 @@ import { AdSlot } from "@/components/AdSlot";
 import { EventGrid } from "@/components/EventGrid";
 import { ShareRow } from "@/components/ShareRow";
 import { faqs, intro } from "@/lib/eventCopy";
+import { externalUrl } from "@/lib/externalUrl";
 import {
   cityPath,
   dateLabel,
@@ -16,6 +17,7 @@ import {
   place,
   priceLabel,
   typePath,
+  venuePath,
   type PublicEvent,
 } from "@/lib/events";
 import { jsonLd } from "@/lib/jsonLd";
@@ -67,6 +69,10 @@ export default async function EventPage({
   const image = picture(event.imageUrl);
   const over = hasEnded(event);
   const questions = faqs(event);
+  // Organiser-supplied, so only http(s) is ever rendered as a link.
+  const maps = externalUrl(event.mapsUrl);
+  const organiserSite = externalUrl(event.organizerUrl);
+  const video = externalUrl(event.videoUrl);
   const [nearby, sameType] = await Promise.all([
     fetchEvents({ city: event.city, limit: "7" }),
     event.eventType
@@ -132,9 +138,9 @@ export default async function EventPage({
                   ? "Reserve a free seat on Godesi.com"
                   : "Get tickets on Godesi.com"}
           </a>
-          {!over && event.mapsUrl ? (
+          {!over && maps ? (
             <a
-              href={event.mapsUrl}
+              href={maps}
               target="_blank"
               rel="noopener nofollow"
               className="rounded-xl border border-slate-300 px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50"
@@ -170,9 +176,14 @@ export default async function EventPage({
             <Fact label="Ends">{dateLabel(event.endsAt, true)}</Fact>
           ) : null}
           <Fact label="Venue">
-            {[event.hallName, event.venue, event.address, place(event)]
-              .filter(Boolean)
-              .join(", ")}
+            {event.venue && event.mode !== "ONLINE" ? (
+              <Link href={venuePath(event)} className="underline">
+                {[event.hallName, event.venue].filter(Boolean).join(", ")}
+              </Link>
+            ) : (
+              [event.hallName, event.venue].filter(Boolean).join(", ") ||
+              "Online"
+            )}
           </Fact>
           <Fact label="Tickets">{priceLabel(event)}</Fact>
           {event.eventType ? (
@@ -184,9 +195,9 @@ export default async function EventPage({
           ) : null}
           {event.organizer ? (
             <Fact label="Organiser">
-              {event.organizerUrl ? (
+              {organiserSite ? (
                 <a
-                  href={event.organizerUrl}
+                  href={organiserSite}
                   target="_blank"
                   rel="noopener"
                   className="underline"
@@ -212,6 +223,35 @@ export default async function EventPage({
           </ul>
         ) : null}
       </section>
+
+      {event.venue && event.mode !== "ONLINE" ? (
+        <section className="rounded-3xl border border-slate-200 bg-white p-6">
+          <p className="text-xs font-black uppercase tracking-wide text-slate-500">
+            Venue
+          </p>
+          <h2 className="mt-1 text-xl font-black">
+            {[event.hallName, event.venue].filter(Boolean).join(" · ")}
+          </h2>
+          <p className="mt-1 text-sm text-slate-600">
+            {[event.address, place(event)].filter(Boolean).join(", ")}
+          </p>
+          <div className="mt-3 flex flex-wrap gap-3 text-sm font-black">
+            <Link href={venuePath(event)} className={site.accent}>
+              Everything on at {event.venue} →
+            </Link>
+            {maps ? (
+              <a
+                href={maps}
+                target="_blank"
+                rel="noopener nofollow"
+                className={site.accent}
+              >
+                📍 Open in maps →
+              </a>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
 
       <section className="space-y-3">
         <h2 className="text-xl font-black">About this event</h2>
@@ -308,11 +348,11 @@ export default async function EventPage({
         </section>
       ) : null}
 
-      {event.videoUrl ? (
+      {video ? (
         <section className="space-y-3">
           <h2 className="text-xl font-black">Promo video</h2>
           <a
-            href={event.videoUrl}
+            href={video}
             target="_blank"
             rel="noopener nofollow"
             className={`text-sm font-bold ${site.accent}`}
@@ -459,7 +499,7 @@ function eventSchema(
           ? {
               "@type": "Organization",
               name: event.organizer,
-              url: event.organizerUrl ?? event.ticketUrl,
+              url: externalUrl(event.organizerUrl) ?? event.ticketUrl,
             }
           : undefined,
         performer: event.speakers.length

@@ -9,7 +9,8 @@ import {
   fetchEvents,
   typePath,
 } from "@/lib/events";
-import { eventSiteForHost, godesiUrl } from "@/lib/sites";
+import { WhyGodesi } from "@/components/WhyGodesi";
+import { eventSiteForHost } from "@/lib/sites";
 
 export const revalidate = 600;
 
@@ -59,6 +60,11 @@ export default async function EventsIndex({
           and family days out. Every event has its own page here with the
           schedule, line-up, venue and ticket prices; booking happens on
           Godesi.com.
+        </p>
+        <p className="text-sm font-black">
+          <Link href="/venues" className={site.accent}>
+            Browse by venue instead →
+          </Link>
         </p>
       </header>
 
@@ -117,18 +123,7 @@ export default async function EventsIndex({
         </ul>
       </section>
 
-      <p className="text-sm text-slate-600">
-        Organising an event?{" "}
-        <a
-          href={godesiUrl("/events/new")}
-          target="_blank"
-          rel="noopener"
-          className={`font-bold ${site.accent}`}
-        >
-          List it free on Godesi.com
-        </a>{" "}
-        and it is published here with its own page.
-      </p>
+      <WhyGodesi accent={site.accent} siteName={site.name} />
     </main>
   );
 }

@@ -33,6 +33,12 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
                 All events
               </a>
               <a
+                href="/venues"
+                className="rounded-full px-3 py-1.5 hover:bg-white/15"
+              >
+                Venues
+              </a>
+              <a
                 href="/list-your-event"
                 className="rounded-full px-3 py-1.5 hover:bg-white/15"
               >
