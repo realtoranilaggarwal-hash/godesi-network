@@ -112,6 +112,95 @@ export function typePath(type: string) {
   return `/events/type/${slugify(type)}`;
 }
 
+export type VenueGroup = {
+  slug: string;
+  venue: string;
+  city: string;
+  state: string | null;
+  address: string | null;
+  mapsUrl: string | null;
+  events: PublicEvent[];
+};
+
+/** Two venues can share a name across cities, so the city is part of the key. */
+export function venueSlug(event: { venue: string; city: string }) {
+  return slugify(`${event.venue} ${event.city}`);
+}
+
+export function venuePath(event: { venue: string; city: string }) {
+  return `/venues/${venueSlug(event)}`;
+}
+
+/**
+ * "Which halls near me actually host desi events" is its own search, and the
+ * API has no venue facet — so the calendar is grouped here, once, and the
+ * fetch cache keeps every venue page on the same upstream call.
+ */
+export async function fetchVenues() {
+  const { items } = await fetchEvents({ limit: "200" });
+  const groups = new Map<string, VenueGroup>();
+
+  for (const event of items) {
+    if (!event.venue || event.mode === "ONLINE") continue;
+    const slug = venueSlug(event);
+    const group = groups.get(slug);
+    if (group) {
+      group.events.push(event);
+      group.address ??= event.address;
+      group.mapsUrl ??= event.mapsUrl;
+      continue;
+    }
+    groups.set(slug, {
+      slug,
+      venue: event.venue,
+      city: event.city,
+      state: event.state,
+      address: event.address,
+      mapsUrl: event.mapsUrl,
+      events: [event],
+    });
+  }
+
+  return Array.from(groups.values()).sort(
+    (a, b) =>
+      b.events.length - a.events.length ||
+      new Date(a.events[0].startsAt).getTime() -
+        new Date(b.events[0].startsAt).getTime(),
+  );
+}
+
+export async function fetchVenue(slug: string) {
+  return (await fetchVenues()).find((venue) => venue.slug === slug) ?? null;
+}
+
+/** A compact date chip: "Sat 23 Aug". */
+export function dayChip(value: string) {
+  return new Date(value).toLocaleDateString("en-US", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  });
+}
+
+export function timeChip(value: string) {
+  return new Date(value).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
+/** How soon it is, in the words people scan for. */
+export function whenBadge(value: string) {
+  const days = Math.round(
+    (new Date(value).getTime() - Date.now()) / 86_400_000,
+  );
+  if (days <= 0) return "Today";
+  if (days === 1) return "Tomorrow";
+  if (days <= 7) return "This week";
+  if (days <= 14) return "Next week";
+  return null;
+}
+
 /**
  * A finished event keeps its page (people still search for it) but must not be
  * indexed or advertised as bookable, and it is gone from every listing.

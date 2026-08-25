@@ -16,6 +16,7 @@ import {
   place,
   priceLabel,
   typePath,
+  venuePath,
   type PublicEvent,
 } from "@/lib/events";
 import { jsonLd } from "@/lib/jsonLd";
@@ -170,9 +171,14 @@ export default async function EventPage({
             <Fact label="Ends">{dateLabel(event.endsAt, true)}</Fact>
           ) : null}
           <Fact label="Venue">
-            {[event.hallName, event.venue, event.address, place(event)]
-              .filter(Boolean)
-              .join(", ")}
+            {event.venue && event.mode !== "ONLINE" ? (
+              <Link href={venuePath(event)} className="underline">
+                {[event.hallName, event.venue].filter(Boolean).join(", ")}
+              </Link>
+            ) : (
+              [event.hallName, event.venue].filter(Boolean).join(", ") ||
+              "Online"
+            )}
           </Fact>
           <Fact label="Tickets">{priceLabel(event)}</Fact>
           {event.eventType ? (
@@ -212,6 +218,35 @@ export default async function EventPage({
           </ul>
         ) : null}
       </section>
+
+      {event.venue && event.mode !== "ONLINE" ? (
+        <section className="rounded-3xl border border-slate-200 bg-white p-6">
+          <p className="text-xs font-black uppercase tracking-wide text-slate-500">
+            Venue
+          </p>
+          <h2 className="mt-1 text-xl font-black">
+            {[event.hallName, event.venue].filter(Boolean).join(" · ")}
+          </h2>
+          <p className="mt-1 text-sm text-slate-600">
+            {[event.address, place(event)].filter(Boolean).join(", ")}
+          </p>
+          <div className="mt-3 flex flex-wrap gap-3 text-sm font-black">
+            <Link href={venuePath(event)} className={site.accent}>
+              Everything on at {event.venue} →
+            </Link>
+            {event.mapsUrl ? (
+              <a
+                href={event.mapsUrl}
+                target="_blank"
+                rel="noopener nofollow"
+                className={site.accent}
+              >
+                📍 Open in maps →
+              </a>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
 
       <section className="space-y-3">
         <h2 className="text-xl font-black">About this event</h2>

@@ -2,7 +2,13 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { AdSlot } from "@/components/AdSlot";
 import { EventRowSection } from "@/components/EventGrid";
-import { cityPath, fetchEventFacets, typePath } from "@/lib/events";
+import {
+  cityPath,
+  fetchEventFacets,
+  fetchVenues,
+  typePath,
+} from "@/lib/events";
+import { WhyGodesi } from "@/components/WhyGodesi";
 import { FeedSection } from "@/components/FeedSection";
 import { SiteSearch } from "@/components/SiteSearch";
 import { DJ_SIGNUP, godesiUrl, siteForHost } from "@/lib/sites";
@@ -59,6 +65,8 @@ export default async function HomePage() {
   const facets = site.eventPages
     ? await fetchEventFacets()
     : { cities: [], types: [] };
+  const venues = site.eventPages ? await fetchVenues() : [];
+  const upcoming = facets.cities.reduce((sum, city) => sum + city.count, 0);
   const cta = CTA[site.key] ?? {
     href: "/signup",
     label: "Post on Godesi",
@@ -70,6 +78,24 @@ export default async function HomePage() {
       <section className={`rounded-3xl bg-gradient-to-r ${site.gradient} px-5 py-10 text-white sm:px-8`}>
         <h1 className="text-3xl font-black sm:text-4xl">{site.tagline}</h1>
         <p className="mt-2 max-w-2xl text-white/90">{site.description}</p>
+        {site.eventPages && upcoming ? (
+          <dl className="mt-5 flex flex-wrap gap-2 text-sm font-bold">
+            <div className="rounded-xl bg-white/15 px-3 py-2">
+              <dt className="text-xs font-semibold text-white/80">
+                Upcoming events
+              </dt>
+              <dd className="text-lg font-black">{upcoming}</dd>
+            </div>
+            <div className="rounded-xl bg-white/15 px-3 py-2">
+              <dt className="text-xs font-semibold text-white/80">Cities</dt>
+              <dd className="text-lg font-black">{facets.cities.length}</dd>
+            </div>
+            <div className="rounded-xl bg-white/15 px-3 py-2">
+              <dt className="text-xs font-semibold text-white/80">Venues</dt>
+              <dd className="text-lg font-black">{venues.length}</dd>
+            </div>
+          </dl>
+        ) : null}
         <div className="mt-5 flex flex-wrap gap-2">
           <a
             href={godesiUrl(cta.href)}
@@ -185,31 +211,47 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      {site.eventPages ? (
-        <section className="rounded-3xl border border-slate-200 bg-white p-6">
-          <h2 className="text-xl font-black">
-            Organising an event? Post it once, get found everywhere
-          </h2>
-          <p className="mt-2 max-w-3xl text-sm text-slate-600">
-            Listing is free and unlimited on Godesi.com, tickets are sold there
-            with QR check-in, and the event automatically gets a full page here
-            on {site.name} — its own city page, its own event-type page and its
-            own search results.
-          </p>
-          <div className="mt-3 flex flex-wrap gap-3 text-sm font-bold">
-            <Link href="/list-your-event" className={site.accent}>
-              Fees, plans and where you get listed →
+      {venues.length ? (
+        <section className="space-y-3">
+          <div className="flex flex-wrap items-end justify-between gap-2">
+            <div>
+              <h2 className="text-xl font-black">Venues to know</h2>
+              <p className="text-sm text-slate-600">
+                The halls, temples and theatres with the most coming up.
+              </p>
+            </div>
+            <Link href="/venues" className={`text-sm font-black ${site.accent}`}>
+              All {venues.length} venues →
             </Link>
-            <a
-              href={godesiUrl("/events/new")}
-              target="_blank"
-              rel="noopener"
-              className={site.accent}
-            >
-              Post your event free →
-            </a>
           </div>
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {venues.slice(0, 8).map((venue) => (
+              <li key={venue.slug}>
+                <Link
+                  href={`/venues/${venue.slug}`}
+                  className="flex h-full flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                >
+                  <span className="text-xl" aria-hidden>
+                    🏛️
+                  </span>
+                  <span className="text-sm font-black text-slate-900">
+                    {venue.venue}
+                  </span>
+                  <span className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                    {[venue.city, venue.state].filter(Boolean).join(", ")}
+                  </span>
+                  <span className="mt-auto pt-1 text-xs font-black text-slate-700">
+                    {venue.events.length} upcoming
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </section>
+      ) : null}
+
+      {site.eventPages ? (
+        <WhyGodesi accent={site.accent} siteName={site.name} />
       ) : null}
 
       {site.sections.map((section, index) => (
