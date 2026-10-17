@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { age, bodyParts, tagPath, type ChatterItem } from "@/lib/chatter";
+import { age, bodyParts, safeHref, tagPath, type ChatterItem } from "@/lib/chatter";
 
 function Avatar({ author }: { author: ChatterItem["author"] }) {
   if (author.avatarUrl) {
@@ -53,7 +53,7 @@ export function PostCard({ post, large = false }: { post: ChatterItem; large?: b
       <div className="min-w-0 flex-1">
         <p className="flex flex-wrap items-baseline gap-x-1.5 text-sm">
           {post.author.url ? (
-            <a href={post.author.url} className="font-bold text-slate-900 hover:underline">
+            <a href={safeHref(post.author.url)} className="font-bold text-slate-900 hover:underline">
               {post.author.name}
             </a>
           ) : (
@@ -89,10 +89,10 @@ export function PostCard({ post, large = false }: { post: ChatterItem; large?: b
           <Link href={`/post/${post.id}`} className="flex items-center gap-1 hover:text-sky-600">
             💬 {post.replyCount}
           </Link>
-          <a href={post.url} className="flex items-center gap-1 hover:text-rose-600">
+          <a href={safeHref(post.url)} className="flex items-center gap-1 hover:text-rose-600">
             ❤️ {post.likeCount}
           </a>
-          <a href={post.url} className="flex items-center gap-1 hover:text-emerald-600">
+          <a href={safeHref(post.url)} className="flex items-center gap-1 hover:text-emerald-600">
             ↩️ Reply on GoDesi
           </a>
         </div>

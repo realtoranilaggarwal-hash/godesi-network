@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { tagPath } from "@/lib/chatter";
 import { AdSlot } from "@/components/AdSlot";
 import { EventGrid } from "@/components/EventGrid";
 import { FeedSection } from "@/components/FeedSection";
@@ -34,6 +36,10 @@ export default async function SearchPage({
 }) {
   const site = siteForHost(headers().get("host"));
   const query = searchParams.q?.trim() ?? "";
+  if (site.kind === "chatter") {
+    const word = query.replace(/^#/, "").split(/\s+/)[0]?.toLowerCase();
+    redirect(word ? tagPath(word) : "/");
+  }
   const search = site.search ?? {
     placeholder: `Search ${site.name}`,
     suggestions: [],

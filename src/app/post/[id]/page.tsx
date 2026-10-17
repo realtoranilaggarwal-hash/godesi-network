@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
-import { excerpt, fetchChatter, fetchChatterThread } from "@/lib/chatter";
+import { excerpt, fetchChatter, fetchChatterThread, safeHref } from "@/lib/chatter";
 import { chatterSiteForHost } from "@/lib/sites";
 import { GapodiShell } from "@/components/gapodi/GapodiShell";
 import { PostCard } from "@/components/gapodi/PostCard";
@@ -56,7 +56,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
       ) : null}
       <PostCard post={post} large />
       <a
-        href={post.url}
+        href={safeHref(post.url)}
         className="flex items-center justify-between border-b border-slate-200 px-4 py-3 hover:bg-slate-50"
       >
         <span className="text-slate-500">Have something to say?</span>

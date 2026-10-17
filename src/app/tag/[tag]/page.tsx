@@ -8,7 +8,11 @@ import { Timeline } from "@/components/gapodi/Timeline";
 export const revalidate = 120;
 
 function clean(tag: string) {
-  return decodeURIComponent(tag).replace(/^#/, "").toLowerCase();
+  let decoded = tag;
+  try {
+    decoded = decodeURIComponent(tag);
+  } catch {}
+  return decoded.replace(/^#/, "").toLowerCase();
 }
 
 export function generateMetadata({ params }: { params: { tag: string } }): Metadata {

@@ -79,6 +79,11 @@ export async function fetchChatterThread(id: string): Promise<ChatterThread | nu
 export const CHATTER_HOME = godesiUrl("/chatter?ref=gapodi");
 export const GAPODI_SIGNUP = godesiUrl("/signup?next=%2Fchatter&ref=gapodi");
 
+/** Only http(s) links from the feed are rendered; anything else falls back to Chatter. */
+export function safeHref(url: string | null | undefined) {
+  return url && /^https?:\/\//i.test(url) ? url : CHATTER_HOME;
+}
+
 export function excerpt(body: string, length = 70) {
   const flat = body.replace(/\s+/g, " ").trim();
   return flat.length > length ? `${flat.slice(0, length - 1)}…` : flat;
