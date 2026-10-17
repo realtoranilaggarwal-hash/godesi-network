@@ -7,6 +7,7 @@ import {
   fetchVenues,
   typePath,
 } from "@/lib/events";
+import { fetchChatter, tagPath } from "@/lib/chatter";
 import { siteForHost } from "@/lib/sites";
 
 export const revalidate = 3600;
@@ -69,6 +70,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: new Date(event.updatedAt),
         changeFrequency: "weekly",
         priority: 0.8,
+      });
+    }
+  }
+
+  // Gapodi's own hubs; single posts are canonical on godesi.com, so they stay out.
+  if (site.kind === "chatter") {
+    const { topics, trending } = await fetchChatter();
+    for (const topic of topics) {
+      entries.push({
+        url: `${base}/topic/${topic.id}`,
+        changeFrequency: "hourly",
+        priority: 0.8,
+      });
+    }
+    for (const item of trending) {
+      entries.push({
+        url: `${base}${tagPath(item.tag)}`,
+        changeFrequency: "daily",
+        priority: 0.6,
       });
     }
   }
