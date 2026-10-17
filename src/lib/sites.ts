@@ -31,7 +31,7 @@ export type SiteConfig = {
   /** Tailwind classes, kept as literals so the compiler keeps them. */
   gradient: string;
   accent: string;
-  kind: "news" | "events" | "businesses" | "leads" | "elite";
+  kind: "news" | "events" | "businesses" | "leads" | "elite" | "chatter";
   /**
    * The site publishes full event pages of its own (self-canonical, with
    * schema.org markup) instead of teasers that bounce to godesi.com, so it
@@ -72,6 +72,13 @@ export const DJ_SIGNUP =
 export function eventSiteForHost(host?: string | null): SiteConfig {
   const site = siteForHost(host);
   if (!site.eventPages) notFound();
+  return site;
+}
+
+/** Gapodi routes only exist on gapodi.com. */
+export function chatterSiteForHost(host?: string | null): SiteConfig {
+  const site = siteForHost(host);
+  if (site.kind !== "chatter") notFound();
   return site;
 }
 
@@ -557,6 +564,23 @@ export const SITES: SiteConfig[] = [
         "Kids workshop",
       ],
     },
+  },
+  {
+    key: "gapodi",
+    domain: "gapodi.com",
+    name: "Gapodi",
+    tagline: "Are you a Gapodi?",
+    description:
+      "What desis are talking about right now: short posts on food, cricket, Bollywood, jobs, travel and life in your city, from members of GoDesi Chatter.",
+    emoji: "💬",
+    gradient: "from-orange-500 via-rose-500 to-fuchsia-600",
+    accent: "text-rose-600",
+    kind: "chatter",
+    sections: [],
+    about: [
+      "Gapodi shows the public posts from GoDesi Chatter, the short-post corner of godesi.com.",
+      "Posting, replies, likes and follows happen on godesi.com with your GoDesi account, and new posts appear here within a few minutes.",
+    ],
   },
 ];
 

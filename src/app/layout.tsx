@@ -55,9 +55,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             }),
           }}
         />
-        <SiteHeader site={site} />
-        {children}
-        <SiteFooter site={site} />
+        {site.kind === "chatter" ? (
+          children
+        ) : (
+          <>
+            <SiteHeader site={site} />
+            {children}
+            <SiteFooter site={site} />
+          </>
+        )}
       </body>
     </html>
   );
