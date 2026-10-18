@@ -46,7 +46,32 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
               </a>
             </>
           ) : null}
-          <a href="/about" className="rounded-full px-3 py-1.5 hover:bg-white/15">
+          {site.kind === "realestate" ? (
+            <>
+              <a
+                href="/agents"
+                className="rounded-full px-3 py-1.5 hover:bg-white/15"
+              >
+                Agents
+              </a>
+              <a
+                href="/properties"
+                className="rounded-full px-3 py-1.5 hover:bg-white/15"
+              >
+                Properties
+              </a>
+              <a
+                href="/for-agents"
+                className="rounded-full px-3 py-1.5 hover:bg-white/15"
+              >
+                For agents
+              </a>
+            </>
+          ) : null}
+          <a
+            href="/about"
+            className="rounded-full px-3 py-1.5 hover:bg-white/15"
+          >
             About
           </a>
           <a

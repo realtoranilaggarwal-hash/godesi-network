@@ -12,6 +12,7 @@ import { WhyGodesi } from "@/components/WhyGodesi";
 import { FeedSection } from "@/components/FeedSection";
 import { SiteSearch } from "@/components/SiteSearch";
 import { GapodiHome } from "@/components/gapodi/GapodiHome";
+import { RealEstateHome } from "@/components/realestate/RealEstateHome";
 import { DJ_SIGNUP, godesiUrl, siteForHost } from "@/lib/sites";
 
 export const revalidate = 600;
@@ -66,6 +67,7 @@ export default async function HomePage({
 }) {
   const site = siteForHost(headers().get("host"));
   if (site.kind === "chatter") return <GapodiHome before={searchParams.before} />;
+  if (site.kind === "realestate") return <RealEstateHome />;
   // Event sites publish their own pages, so their rows link inwards and the
   // page ends with city and type hubs that give those pages internal links.
   const facets = site.eventPages

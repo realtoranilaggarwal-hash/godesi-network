@@ -8,6 +8,7 @@ import {
   typePath,
 } from "@/lib/events";
 import { fetchChatter, tagPath } from "@/lib/chatter";
+import { fetchAgents } from "@/lib/realEstate";
 import { siteForHost } from "@/lib/sites";
 
 export const revalidate = 3600;
@@ -89,6 +90,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${base}${tagPath(item.tag)}`,
         changeFrequency: "daily",
         priority: 0.6,
+      });
+    }
+  }
+
+  if (site.kind === "realestate") {
+    const { items } = await fetchAgents({ limit: "200" });
+    entries.push(
+      { url: `${base}/agents`, changeFrequency: "daily", priority: 0.9 },
+      { url: `${base}/properties`, changeFrequency: "daily", priority: 0.8 },
+      { url: `${base}/for-agents`, changeFrequency: "monthly", priority: 0.6 },
+    );
+    for (const agent of items) {
+      entries.push({
+        url: `${base}/agents/${agent.slug}`,
+        lastModified: new Date(agent.updatedAt),
+        changeFrequency: "weekly",
+        priority: 0.7,
       });
     }
   }

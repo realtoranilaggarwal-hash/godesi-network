@@ -31,7 +31,7 @@ export type SiteConfig = {
   /** Tailwind classes, kept as literals so the compiler keeps them. */
   gradient: string;
   accent: string;
-  kind: "news" | "events" | "businesses" | "leads" | "elite" | "chatter";
+  kind: "news" | "events" | "businesses" | "leads" | "elite" | "chatter" | "realestate";
   /**
    * The site publishes full event pages of its own (self-canonical, with
    * schema.org markup) instead of teasers that bounce to godesi.com, so it
@@ -79,6 +79,13 @@ export function eventSiteForHost(host?: string | null): SiteConfig {
 export function chatterSiteForHost(host?: string | null): SiteConfig {
   const site = siteForHost(host);
   if (site.kind !== "chatter") notFound();
+  return site;
+}
+
+/** Agent directory routes only exist on the real estate site. */
+export function realEstateSiteForHost(host?: string | null): SiteConfig {
+  const site = siteForHost(host);
+  if (site.kind !== "realestate") notFound();
   return site;
 }
 
@@ -580,6 +587,24 @@ export const SITES: SiteConfig[] = [
     about: [
       "Gapodi shows the public posts from GoDesi Chatter, the short-post corner of godesi.com.",
       "Posting, replies, likes and follows happen on godesi.com with your GoDesi account, and new posts appear here within a few minutes.",
+    ],
+  },
+  {
+    key: "realestateyp",
+    domain: "realestateyp.com",
+    name: "RealEstateYP",
+    tagline: "Find a real estate agent near you",
+    description:
+      "Real estate agents, brokers and property dealers across the USA, with their services, areas and homes for sale or rent. Every profile is kept up to date on GoDesi.",
+    emoji: "🏡",
+    gradient: "from-sky-600 via-indigo-600 to-violet-700",
+    accent: "text-indigo-600",
+    kind: "realestate",
+    sections: [],
+    about: [
+      "RealEstateYP lists real estate agents, brokers and property dealers, and the homes members post for sale or rent.",
+      "Every profile is a GoDesi card: agents claim, edit and upgrade their profile on godesi.com, and changes show here within minutes.",
+      "Profiles marked Unclaimed were built from public business information and have not been checked by the agent. Agents can claim, correct or remove theirs on GoDesi.",
     ],
   },
 ];
