@@ -31,7 +31,7 @@ export type SiteConfig = {
   /** Tailwind classes, kept as literals so the compiler keeps them. */
   gradient: string;
   accent: string;
-  kind: "news" | "events" | "businesses" | "leads" | "elite" | "chatter" | "realestate";
+  kind: "news" | "events" | "businesses" | "leads" | "elite" | "chatter" | "realestate" | "guide";
   /**
    * The site publishes full event pages of its own (self-canonical, with
    * schema.org markup) instead of teasers that bounce to godesi.com, so it
@@ -86,6 +86,13 @@ export function chatterSiteForHost(host?: string | null): SiteConfig {
 export function realEstateSiteForHost(host?: string | null): SiteConfig {
   const site = siteForHost(host);
   if (site.kind !== "realestate") notFound();
+  return site;
+}
+
+/** Buyer and seller guide routes only exist on the guide site. */
+export function guideSiteForHost(host?: string | null): SiteConfig {
+  const site = siteForHost(host);
+  if (site.kind !== "guide") notFound();
   return site;
 }
 
@@ -605,6 +612,24 @@ export const SITES: SiteConfig[] = [
       "RealEstateYP lists real estate agents, brokers and property dealers, and the homes members post for sale or rent.",
       "Every profile is a GoDesi card: agents claim, edit and upgrade their profile on godesi.com, and changes show here within minutes.",
       "Profiles marked Unclaimed were built from public business information and have not been checked by the agent. Agents can claim, correct or remove theirs on GoDesi.",
+    ],
+  },
+  {
+    key: "whyuserealtor",
+    domain: "whyuserealtor.com",
+    name: "Why Use an Agent",
+    tagline: "Plain-English guides to buying and selling a home",
+    description:
+      "Do you need a real estate agent? Free, plain-English guides on selling vs. FSBO, who pays the agent, first-time buying and what to ask before you hire — and a free way to compare local agents.",
+    emoji: "🏠",
+    gradient: "from-emerald-600 via-teal-600 to-sky-700",
+    accent: "text-teal-700",
+    kind: "guide",
+    sections: [],
+    about: [
+      "Why Use an Agent explains, in plain English, what a real estate agent does for buyers and sellers, what it costs, and how to choose one.",
+      "The guides are general information, not legal, tax or financial advice. Rules and practices differ by state, so check the details with a licensed professional.",
+      "Compare agents requests and agent profiles are handled by GoDesi.com, our community platform, and agent profiles are also listed on RealEstateYP.com.",
     ],
   },
 ];

@@ -8,6 +8,7 @@ import {
   typePath,
 } from "@/lib/events";
 import { fetchChatter, tagPath } from "@/lib/chatter";
+import { GUIDES } from "@/lib/guides";
 import { fetchAgents } from "@/lib/realEstate";
 import { siteForHost } from "@/lib/sites";
 
@@ -90,6 +91,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${base}${tagPath(item.tag)}`,
         changeFrequency: "daily",
         priority: 0.6,
+      });
+    }
+  }
+
+  if (site.kind === "guide") {
+    for (const guide of GUIDES) {
+      entries.push({
+        url: `${base}/guides/${guide.slug}`,
+        changeFrequency: "monthly",
+        priority: 0.8,
       });
     }
   }
