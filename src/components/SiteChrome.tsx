@@ -8,6 +8,10 @@ const POST_LINKS: Record<string, { href: string; label: string }> = {
   itplacementservices: { href: "/signup", label: "List your consultancy" },
   djswiki: { href: DJ_SIGNUP, label: "List your DJ service free" },
   eventringer: { href: "/events/new", label: "List your event free" },
+  whyuserealtor: {
+    href: "/leads/new?category=real-estate&do=buy",
+    label: "Compare agents free",
+  },
 };
 
 /** A site without its own call to action still gets a working header. */
@@ -46,7 +50,48 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
               </a>
             </>
           ) : null}
-          <a href="/about" className="rounded-full px-3 py-1.5 hover:bg-white/15">
+          {site.kind === "realestate" ? (
+            <>
+              <a
+                href="/agents"
+                className="rounded-full px-3 py-1.5 hover:bg-white/15"
+              >
+                Agents
+              </a>
+              <a
+                href="/properties"
+                className="rounded-full px-3 py-1.5 hover:bg-white/15"
+              >
+                Properties
+              </a>
+              <a
+                href="/for-agents"
+                className="rounded-full px-3 py-1.5 hover:bg-white/15"
+              >
+                For agents
+              </a>
+            </>
+          ) : null}
+          {site.kind === "guide" ? (
+            <>
+              <a
+                href="/#guides"
+                className="rounded-full px-3 py-1.5 hover:bg-white/15"
+              >
+                Guides
+              </a>
+              <a
+                href="https://realestateyp.com/agents"
+                className="rounded-full px-3 py-1.5 hover:bg-white/15"
+              >
+                Find an agent
+              </a>
+            </>
+          ) : null}
+          <a
+            href="/about"
+            className="rounded-full px-3 py-1.5 hover:bg-white/15"
+          >
             About
           </a>
           <a
@@ -112,6 +157,14 @@ export function SiteFooter({ site }: { site: SiteConfig }) {
             Contact
           </a>
         </div>
+        {site.kind === "guide" ? (
+          <p className="text-xs text-slate-500">
+            REALTOR® is a federally registered collective membership mark of the
+            National Association of REALTORS®, which identifies real estate
+            professionals who are members. This site is not affiliated with
+            NAR. Guides are general information, not legal or financial advice.
+          </p>
+        ) : null}
         <p className="text-xs text-slate-500">
           © {new Date().getFullYear()} {site.domain} · a Godesi network site
         </p>

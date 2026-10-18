@@ -8,6 +8,7 @@ One Next.js app serving several niche sites off Godesi's public feed:
 | diwali.cc | Festival events and celebration guides |
 | indianbusinessassociation.com | Indian-owned business directory |
 | eventringer.com | Full event pages, hosted here for SEO |
+| realestateyp.com | Real estate agent directory and properties, from `/api/real-estate/*` |
 | gapodi.com | Twitter-style timeline of GoDesi Chatter (`/api/chatter`) |
 
 Most cards are teasers that link to the full story or listing on godesi.com, so
