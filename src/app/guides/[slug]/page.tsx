@@ -152,13 +152,29 @@ export default async function GuidePage({
           className="rounded-2xl border-2 border-teal-300 bg-teal-50 p-4"
         >
           <p className="font-bold">
-            {mode === "sell" ? "🏷️ Selling soon?" : "🏡 Buying soon?"}
+            {guide.audience === "both"
+              ? "🏠 Buying or selling soon?"
+              : mode === "sell"
+                ? "🏷️ Selling soon?"
+                : "🏡 Buying soon?"}
           </p>
           <p className="mt-1 text-sm text-slate-600">
             Compare local agents free. They see your request and reach out.
           </p>
           <input type="hidden" name="category" value="real-estate" />
-          <input type="hidden" name="do" value={mode} />
+          {guide.audience === "both" ? (
+            <select
+              name="do"
+              defaultValue="buy"
+              aria-label="Buying or selling"
+              className="mt-3 w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
+            >
+              <option value="buy">I&apos;m buying</option>
+              <option value="sell">I&apos;m selling</option>
+            </select>
+          ) : (
+            <input type="hidden" name="do" value={mode} />
+          )}
           <input
             name="city"
             required

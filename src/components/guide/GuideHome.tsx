@@ -33,7 +33,7 @@ export function AgentStrip({ agents }: { agents: Agent[] }) {
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-lg font-bold">Agents near you</h2>
+        <h2 className="text-lg font-bold">Agents on GoDesi</h2>
         <a
           href="https://realestateyp.com/agents"
           className="text-sm font-semibold text-teal-700 hover:underline"
