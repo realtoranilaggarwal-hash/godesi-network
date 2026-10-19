@@ -89,6 +89,13 @@ export function realEstateSiteForHost(host?: string | null): SiteConfig {
   return site;
 }
 
+/** Self-hosted Who's Who profiles only exist on the elite site. */
+export function eliteSiteForHost(host?: string | null): SiteConfig {
+  const site = siteForHost(host);
+  if (site.kind !== "elite") notFound();
+  return site;
+}
+
 /** Buyer and seller guide routes only exist on the guide site. */
 export function guideSiteForHost(host?: string | null): SiteConfig {
   const site = siteForHost(host);

@@ -10,7 +10,7 @@ import { ShareRow } from "@/components/ShareRow";
 import { godesiUrl } from "@/lib/sites";
 
 /** Publishers that refuse hot-linking still render through Godesi's proxy. */
-function picture(url: string | null) {
+export function picture(url: string | null) {
   if (!url) return null;
   return url.includes(".public.blob.vercel-storage.com")
     ? url
@@ -45,6 +45,9 @@ export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
       );
 
   const services = isBusiness(item) ? (item.services ?? []) : [];
+  // Who's Who profiles are hosted on this site; everything else opens on Godesi.
+  const href = isElite(item) ? `/people/${item.slug}` : item.url;
+  const external = isElite(item) ? {} : { target: "_blank", rel: "noopener" };
 
   const meta = isNews(item)
     ? [dateLabel(item.publishedAt), place(item.city, item.state), item.source]
@@ -58,7 +61,7 @@ export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-      <a href={item.url} target="_blank" rel="noopener">
+      <a href={href} {...external}>
         {image ? (
           // A portrait cropped to fill loses the face, so people are shown whole
           // on a plain backdrop while news and event artwork still fills the card.
@@ -86,7 +89,7 @@ export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
         ) : null}
       </a>
       <div className="flex flex-1 flex-col p-4">
-        <a href={item.url} target="_blank" rel="noopener" className="min-w-0">
+        <a href={href} {...external} className="min-w-0">
           <h3 className="font-bold leading-snug text-slate-900 group-hover:underline">
             {title}
           </h3>
@@ -120,9 +123,9 @@ export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
           </p>
         ) : null}
         <a
-          href={isElite(item) && unclaimed ? item.claimUrl : item.url}
-          target="_blank"
-          rel="noopener"
+          {...(unclaimed
+            ? { href: item.claimUrl, target: "_blank", rel: "noopener" }
+            : { href, ...external })}
           className={`mt-2 text-xs font-bold ${accent}`}
         >
           {isLead(item)
@@ -130,7 +133,7 @@ export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
             : unclaimed
               ? "View and claim on Godesi →"
               : isElite(item)
-                ? "Full profile on Godesi →"
+                ? "Full profile →"
                 : "Read on Godesi →"}
         </a>
         <ShareRow url={item.url} title={title} image={image} />

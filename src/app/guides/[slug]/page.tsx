@@ -6,9 +6,10 @@ import {
   GuideCard,
   pickAgents,
 } from "@/components/guide/GuideHome";
+import { AgentRequestForm } from "@/components/realestate/AgentRequestForm";
 import { GUIDES, guideBySlug } from "@/lib/guides";
 import { fetchAgents } from "@/lib/realEstate";
-import { godesiUrl, guideSiteForHost } from "@/lib/sites";
+import { guideSiteForHost } from "@/lib/sites";
 
 export const revalidate = 600;
 
@@ -146,11 +147,7 @@ export default async function GuidePage({
       </article>
 
       <aside className="space-y-4 lg:sticky lg:top-4 lg:self-start">
-        <form
-          action={godesiUrl("/leads/new")}
-          method="get"
-          className="rounded-2xl border-2 border-teal-300 bg-teal-50 p-4"
-        >
+        <div className="rounded-2xl border-2 border-teal-300 bg-teal-50 p-4">
           <p className="font-bold">
             {guide.audience === "both"
               ? "🏠 Buying or selling soon?"
@@ -158,35 +155,11 @@ export default async function GuidePage({
                 ? "🏷️ Selling soon?"
                 : "🏡 Buying soon?"}
           </p>
-          <p className="mt-1 text-sm text-slate-600">
-            Compare local agents free. They see your request and reach out.
+          <p className="mb-3 mt-1 text-sm text-slate-600">
+            Compare local agents free, right here.
           </p>
-          <input type="hidden" name="category" value="real-estate" />
-          {guide.audience === "both" ? (
-            <select
-              name="do"
-              defaultValue="buy"
-              aria-label="Buying or selling"
-              className="mt-3 w-full rounded-xl border border-slate-300 bg-white px-3 py-2"
-            >
-              <option value="buy">I&apos;m buying</option>
-              <option value="sell">I&apos;m selling</option>
-            </select>
-          ) : (
-            <input type="hidden" name="do" value={mode} />
-          )}
-          <input
-            name="city"
-            required
-            maxLength={80}
-            placeholder="City or ZIP"
-            aria-label="City or ZIP"
-            className="mt-3 w-full rounded-xl border border-slate-300 px-3 py-2"
-          />
-          <button className="mt-2 w-full rounded-xl bg-teal-600 px-3 py-2 font-bold text-white hover:bg-teal-700">
-            Compare agents
-          </button>
-        </form>
+          <AgentRequestForm mode={mode} choose={guide.audience === "both"} />
+        </div>
       </aside>
     </main>
   );

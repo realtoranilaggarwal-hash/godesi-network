@@ -27,7 +27,12 @@ export function GuideCard({ guide }: { guide: Guide }) {
   );
 }
 
-/** A few real agents from the GoDesi feed; their pages live on GoDesi. */
+/** Agent pages live on RealEstateYP, so visitors stay inside the network. */
+function agentPageUrl(slug: string) {
+  return `https://realestateyp.com/agents/${encodeURIComponent(slug)}`;
+}
+
+/** A few real agents from the GoDesi feed, linked to their RealEstateYP page. */
 export function AgentStrip({ agents }: { agents: Agent[] }) {
   if (!agents.length) return null;
   return (
@@ -45,7 +50,7 @@ export function AgentStrip({ agents }: { agents: Agent[] }) {
         {agents.map((agent) => (
           <a
             key={agent.slug}
-            href={agent.godesiUrl}
+            href={agentPageUrl(agent.slug)}
             className="flex items-center gap-3 rounded-xl border border-slate-200 p-3 hover:bg-slate-50"
           >
             {agent.logoUrl ? (
@@ -120,7 +125,6 @@ export async function GuideHome() {
       </section>
 
       <WhyAgent
-        action={godesiUrl("/leads/new")}
         joinHref={godesiUrl(AGENT_SIGNUP)}
         agent={
           sample
@@ -128,7 +132,7 @@ export async function GuideHome() {
                 name: sample.name,
                 place: agentPlace(sample),
                 logoUrl: sample.logoUrl,
-                href: sample.godesiUrl,
+                href: agentPageUrl(sample.slug),
                 verified: sample.verified,
                 claimed: sample.claimed,
                 featured: sample.featured,
