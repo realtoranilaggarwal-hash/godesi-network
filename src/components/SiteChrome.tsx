@@ -124,39 +124,15 @@ export function SiteFooter({ site }: { site: SiteConfig }) {
           {site.emoji} {site.name}
         </p>
         <p className="max-w-2xl">
-          {site.name} is part of the Godesi network. Stories, events and
-          listings shown here are published by the community on{" "}
-          <a
-            href={godesiUrl()}
-            target="_blank"
-            rel="noopener"
-            className={`font-bold ${site.accent}`}
-          >
-            Godesi.com
-          </a>
-          , where you can read them in full, contact the poster and post your
-          own — free.
+          {site.name} is part of the GoDesi network: profiles, guides and
+          listings shared by the desi community.
         </p>
-        <div className="flex flex-wrap gap-x-4 gap-y-1 font-semibold">
-          <a href={godesiUrl("/news")} target="_blank" rel="noopener">
-            Desi news
+        <p className="font-semibold">
+          Powered by{" "}
+          <a href={godesiUrl()} className={`font-bold ${site.accent}`}>
+            GoDesi.com
           </a>
-          <a href={godesiUrl("/events")} target="_blank" rel="noopener">
-            Events
-          </a>
-          <a href={godesiUrl("/search")} target="_blank" rel="noopener">
-            Business directory
-          </a>
-          <a href={godesiUrl("/live-radio")} target="_blank" rel="noopener">
-            Live desi radio
-          </a>
-          <a href={godesiUrl("/live-tv")} target="_blank" rel="noopener">
-            Live desi TV
-          </a>
-          <a href={godesiUrl("/contact")} target="_blank" rel="noopener">
-            Contact
-          </a>
-        </div>
+        </p>
         {site.kind === "guide" ? (
           <p className="text-xs text-slate-500">
             REALTOR® is a federally registered collective membership mark of the

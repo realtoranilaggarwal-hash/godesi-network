@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AgentRequestForm } from "@/components/realestate/AgentRequestForm";
 
 export type WhyAgentCard = {
   name: string;
@@ -56,12 +57,9 @@ const REASONS: Record<Mode, { icon: string; title: string; body: string }[]> = {
 /** Buyer/seller explainer with a sample local agent and a free compare-agents request. */
 export function WhyAgent({
   agent,
-  action,
   joinHref,
 }: {
   agent: WhyAgentCard | null;
-  /** Requirement form the city goes to (GET). */
-  action: string;
   /** Where an agent without a profile claims one. */
   joinHref: string;
 }) {
@@ -192,35 +190,14 @@ export function WhyAgent({
             </a>
           )}
 
-          <form
-            action={action}
-            method="get"
-            className="rounded-xl bg-indigo-600 p-3 text-white"
-          >
-            <input type="hidden" name="category" value="real-estate" />
-            <input type="hidden" name="do" value={mode} />
-            <label className="text-sm font-bold" htmlFor="why-agent-city">
+          <div className="rounded-xl bg-indigo-600 p-3 text-white">
+            <p className="mb-2 text-sm font-bold">
               {mode === "sell"
                 ? "Where is the home you're selling?"
                 : "Where do you want to buy?"}
-            </label>
-            <div className="mt-2 flex gap-2">
-              <input
-                id="why-agent-city"
-                name="city"
-                required
-                maxLength={80}
-                placeholder="City or ZIP"
-                className="min-w-0 flex-1 rounded-lg px-3 py-2 text-sm text-slate-900"
-              />
-              <button className="shrink-0 rounded-lg bg-amber-400 px-3 py-2 text-sm font-bold text-slate-900 hover:bg-amber-300">
-                Compare agents
-              </button>
-            </div>
-            <p className="mt-1.5 text-[11px] text-white/80">
-              Free, no obligation. Local agents see your request and reach out.
             </p>
-          </form>
+            <AgentRequestForm key={mode} mode={mode} dark />
+          </div>
         </div>
       </div>
     </section>

@@ -42,7 +42,6 @@ export async function RealEstateHome() {
       </section>
 
       <WhyAgent
-        action={godesiUrl("/leads/new")}
         joinHref={godesiUrl(AGENT_SIGNUP)}
         agent={
           sample

@@ -8,6 +8,7 @@ import {
   typePath,
 } from "@/lib/events";
 import { fetchChatter, tagPath } from "@/lib/chatter";
+import { fetchFeed, isElite } from "@/lib/feed";
 import { GUIDES } from "@/lib/guides";
 import { fetchAgents } from "@/lib/realEstate";
 import { siteForHost } from "@/lib/sites";
@@ -91,6 +92,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${base}${tagPath(item.tag)}`,
         changeFrequency: "daily",
         priority: 0.6,
+      });
+    }
+  }
+
+  // Who's Who profiles are hosted here, so each one gets its own URL.
+  if (site.kind === "elite") {
+    const people = (await fetchFeed({ kind: "elite", limit: "60" })).filter(
+      isElite,
+    );
+    for (const person of people) {
+      entries.push({
+        url: `${base}/people/${person.slug}`,
+        lastModified: new Date(person.publishedAt),
+        changeFrequency: "monthly",
+        priority: 0.7,
       });
     }
   }
