@@ -173,6 +173,7 @@ export const SITES: SiteConfig[] = [
     gradient: "from-amber-500 via-rose-500 to-fuchsia-600",
     accent: "text-rose-600",
     kind: "events",
+    eventPages: true,
     sections: [
       {
         heading: "Upcoming festival events",
@@ -574,6 +575,61 @@ export const SITES: SiteConfig[] = [
       "Every event is published by its own organiser on Godesi.com, our community platform, and gets a full page here with the schedule, line-up, venue, directions and ticket prices so you can decide before you travel.",
       "Booking always happens on Godesi.com, where the organiser manages seats, payments and your tickets — Eventringer is the place people find the event in the first place.",
       "Organising something? List it free on Godesi and it appears here automatically, with its own page, sitemap entry and search-engine markup.",
+    ],
+    search: {
+      placeholder: "Search events by city, festival or artist",
+      suggestions: [
+        "Diwali mela",
+        "Garba night",
+        "Edison NJ",
+        "Bollywood concert",
+        "Kids workshop",
+      ],
+    },
+  },
+  {
+    key: "eve0",
+    domain: "eve0.com",
+    name: "Eve0",
+    tagline: "Every desi event, one short page — tap in, RSVP on Godesi",
+    description:
+      "Eve0 turns every desi community event into a short shareable page with a thumbnail, date, venue and directions. RSVP and tickets are handled on Godesi.com.",
+    emoji: "⚡",
+    gradient: "from-slate-950 via-slate-900 to-sky-900",
+    accent: "text-sky-600",
+    kind: "events",
+    eventPages: true,
+    rows: [
+      {
+        heading: "Next up",
+        blurb: "The soonest events on the community calendar.",
+        query: { limit: "12" },
+        moreHref: "/events",
+        moreLabel: "Full calendar",
+      },
+      {
+        heading: "Festivals & melas",
+        blurb: "Diwali melas, garba nights, pujas and parades.",
+        query: { type: FESTIVAL_TYPES.join(","), limit: "9" },
+        moreHref: "/events",
+        moreLabel: "Full calendar",
+      },
+      {
+        heading: "Concerts, workshops & meetups",
+        blurb: "Live shows, classes, seminars and networking.",
+        query: {
+          type: "Concert,Concert / Live show,Music / DJ night,Party,Party / Social,Conference,Workshop,Seminar / Talk,Meetup / Networking,Webinar",
+          limit: "9",
+        },
+        moreHref: "/events",
+        moreLabel: "Full calendar",
+      },
+    ],
+    sections: [],
+    about: [
+      "Eve0 is the short-link calendar for South Asian community events — every festival, garba, concert, puja, workshop and meetup gets one clean page with a thumbnail, the date, the venue and directions.",
+      "Every event is published by its organiser on Godesi.com, our community platform. Eve0 is where people find it fast and share it; RSVP, guest lists and tickets all happen on Godesi.",
+      "Organising something? List it free on Godesi and it appears here automatically, with its own short page, sitemap entry and search-engine markup.",
     ],
     search: {
       placeholder: "Search events by city, festival or artist",
