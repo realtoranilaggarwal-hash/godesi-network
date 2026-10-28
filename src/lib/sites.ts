@@ -173,6 +173,7 @@ export const SITES: SiteConfig[] = [
     gradient: "from-amber-500 via-rose-500 to-fuchsia-600",
     accent: "text-rose-600",
     kind: "events",
+    eventPages: true,
     sections: [
       {
         heading: "Upcoming festival events",
