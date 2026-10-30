@@ -44,6 +44,8 @@ export type SiteConfig = {
   about: string[];
   /** Hero search: shown when the site is a lookup tool rather than a feed. */
   search?: { placeholder: string; suggestions: string[] };
+  /** Microsoft Clarity project ID; each domain has its own project. */
+  clarityId?: string;
 };
 
 const GODESI = process.env.NEXT_PUBLIC_GODESI_URL ?? "https://godesi.com";
@@ -680,6 +682,7 @@ export const SITES: SiteConfig[] = [
   {
     key: "whyuserealtor",
     domain: "whyuserealtor.com",
+    clarityId: "z5wrreba4y",
     name: "Why Use an Agent",
     tagline: "Plain-English guides to buying and selling a home",
     description:
