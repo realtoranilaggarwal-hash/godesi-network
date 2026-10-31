@@ -31,7 +31,7 @@ export type SiteConfig = {
   /** Tailwind classes, kept as literals so the compiler keeps them. */
   gradient: string;
   accent: string;
-  kind: "news" | "events" | "businesses" | "leads" | "elite" | "chatter" | "realestate" | "guide";
+  kind: "news" | "events" | "businesses" | "leads" | "elite" | "chatter" | "realestate" | "guide" | "cards";
   /**
    * The site publishes full event pages of its own (self-canonical, with
    * schema.org markup) instead of teasers that bounce to godesi.com, so it
@@ -100,6 +100,13 @@ export function eliteSiteForHost(host?: string | null): SiteConfig {
 export function guideSiteForHost(host?: string | null): SiteConfig {
   const site = siteForHost(host);
   if (site.kind !== "guide") notFound();
+  return site;
+}
+
+/** Short-link mini cards only exist on the cards site (godesi.us). */
+export function cardSiteForHost(host?: string | null): SiteConfig {
+  const site = siteForHost(host);
+  if (site.kind !== "cards") notFound();
   return site;
 }
 
@@ -637,6 +644,50 @@ export const SITES: SiteConfig[] = [
       "Why Use an Agent explains, in plain English, what a real estate agent does for buyers and sellers, what it costs, and how to choose one.",
       "The guides are general information, not legal, tax or financial advice. Rules and practices differ by state, so check the details with a licensed professional.",
       "Compare agents requests and agent profiles are handled by GoDesi.com, our community platform, and agent profiles are also listed on RealEstateYP.com.",
+    ],
+  },
+  {
+    key: "godesius",
+    domain: "godesi.us",
+    name: "GoDesi Cards",
+    tagline: "Every desi business, one short link",
+    description:
+      "godesi.us/<name> opens a mini business card — photo, services, phone, WhatsApp and a printable QR — powered by the free GoDesi directory. Claim yours free.",
+    emoji: "🪪",
+    gradient: "from-amber-500 via-orange-600 to-rose-600",
+    accent: "text-orange-700",
+    kind: "cards",
+    sections: [
+      {
+        heading: "Newest cards",
+        blurb: "Freshly claimed and verified GoDesi profiles.",
+        query: { kind: "businesses", limit: "9" },
+        moreHref: "/directory",
+        moreLabel: "Browse the directory",
+      },
+      {
+        heading: "Professionals",
+        blurb: "Accountants, agents, tutors, doctors and more.",
+        query: { kind: "businesses", category: "professionals", limit: "6" },
+        moreHref: "/categories/professionals",
+        moreLabel: "All professionals",
+      },
+      {
+        heading: "What's coming up",
+        blurb: "Desi events near you, hosted on GoDesi.",
+        query: { kind: "events", limit: "6" },
+        moreHref: "/events",
+        moreLabel: "All events",
+      },
+    ],
+    search: {
+      placeholder: "Find a card — business name or city",
+      suggestions: ["Realtor", "Accountant", "Edison", "Catering", "DJ"],
+    },
+    about: [
+      "GoDesi Cards gives every business and professional listed on GoDesi.com a short, printable link: godesi.us/<name> opens a mini card with their photo, services, phone, WhatsApp and a QR code that fits on a business card or flyer.",
+      "Everything shown here lives on GoDesi — claim or create a free profile there and your short link starts working within minutes.",
+      "Cards marked Unclaimed were built from public business information and have not been checked by the owner; owners can claim, correct or remove theirs on GoDesi.",
     ],
   },
 ];
