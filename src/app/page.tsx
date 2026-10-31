@@ -59,6 +59,11 @@ const CTA: Record<string, { href: string; label: string; note: string }> = {
     label: "🏢 List your consultancy free",
     note: "Free claimable page with hotlist, contacts, WhatsApp and photos",
   },
+  godesius: {
+    href: "/claim",
+    label: "🪪 Get your free card & short link",
+    note: "Free forever — your card, QR and godesi.us/you short link",
+  },
 };
 
 export default async function HomePage({
