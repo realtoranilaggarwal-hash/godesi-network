@@ -1,4 +1,5 @@
 import { DJ_SIGNUP, godesiUrl, type SiteConfig } from "@/lib/sites";
+import { GoDesiBanners } from "@/components/GoDesiBanners";
 
 const POST_LINKS: Record<string, { href: string; label: string }> = {
   desinewspaper: { href: "/news/report", label: "Report news" },
@@ -118,6 +119,8 @@ export function SiteHeader({ site }: { site: SiteConfig }) {
 
 export function SiteFooter({ site }: { site: SiteConfig }) {
   return (
+    <>
+    <GoDesiBanners source={site.domain} />
     <footer className="mt-10 border-t border-slate-200 bg-white">
       <div className="mx-auto max-w-6xl space-y-3 px-4 py-8 text-sm text-slate-600">
         <p className="font-bold text-slate-900">
@@ -146,5 +149,6 @@ export function SiteFooter({ site }: { site: SiteConfig }) {
         </p>
       </div>
     </footer>
+    </>
   );
 }
