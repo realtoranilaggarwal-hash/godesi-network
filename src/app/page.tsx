@@ -14,6 +14,7 @@ import { SiteSearch } from "@/components/SiteSearch";
 import { GapodiHome } from "@/components/gapodi/GapodiHome";
 import { RealEstateHome } from "@/components/realestate/RealEstateHome";
 import { GuideHome } from "@/components/guide/GuideHome";
+import { GoDesiPromo } from "@/components/GoDesiPromo";
 import { DJ_SIGNUP, godesiUrl, siteForHost } from "@/lib/sites";
 
 export const revalidate = 600;
@@ -72,9 +73,28 @@ export default async function HomePage({
   searchParams: { before?: string };
 }) {
   const site = siteForHost(headers().get("host"));
-  if (site.kind === "chatter") return <GapodiHome before={searchParams.before} />;
-  if (site.kind === "realestate") return <RealEstateHome />;
-  if (site.kind === "guide") return <GuideHome />;
+  const promo = <GoDesiPromo source={site.domain} />;
+  if (site.kind === "chatter")
+    return (
+      <>
+        <GapodiHome before={searchParams.before} />
+        {promo}
+      </>
+    );
+  if (site.kind === "realestate")
+    return (
+      <>
+        <RealEstateHome />
+        {promo}
+      </>
+    );
+  if (site.kind === "guide")
+    return (
+      <>
+        <GuideHome />
+        {promo}
+      </>
+    );
   // Event sites publish their own pages, so their rows link inwards and the
   // page ends with city and type hubs that give those pages internal links.
   const facets = site.eventPages
@@ -89,6 +109,7 @@ export default async function HomePage({
   };
 
   return (
+    <>
     <main className="mx-auto max-w-6xl space-y-8 px-4 py-6">
       <section className={`rounded-3xl bg-gradient-to-r ${site.gradient} px-5 py-10 text-white sm:px-8`}>
         <h1 className="text-3xl font-black sm:text-4xl">{site.tagline}</h1>
@@ -293,5 +314,7 @@ export default async function HomePage({
         </a>
       </section>
     </main>
+    {promo}
+    </>
   );
 }
