@@ -35,6 +35,7 @@ export async function FeedSection({
               key={"id" in item ? item.id : item.slug}
               item={item}
               accent={site.accent}
+              localCards={site.kind === "cards"}
             />
           ))}
         </div>
