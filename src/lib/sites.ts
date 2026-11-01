@@ -260,6 +260,13 @@ export const SITES: SiteConfig[] = [
         moreHref: "/categories/business-services",
         moreLabel: "All business services",
       },
+      {
+        heading: "Wedding vendors",
+        blurb: "Decorators, mandap, mehndi, caterers, photographers, makeup, venues and pandits.",
+        query: { kind: "businesses", category: "events-wedding", limit: "6" },
+        moreHref: "/wedding",
+        moreLabel: "All wedding vendors",
+      },
     ],
     about: [
       "The Indian Business Association directory exists to make Indian-owned businesses easy to find and easy to support.",
@@ -501,6 +508,13 @@ export const SITES: SiteConfig[] = [
         },
         moreHref: "/categories/events-wedding-stage-and-sound-rentals",
         moreLabel: "All stage & sound rentals",
+      },
+      {
+        heading: "More wedding vendors",
+        blurb: "Photographers, decorators, mehndi, caterers and makeup artists to book with your DJ.",
+        query: { kind: "businesses", category: "events-wedding", limit: "9" },
+        moreHref: "/wedding/vendors",
+        moreLabel: "Wedding vendor? List free",
       },
       {
         heading: "Couples and hosts looking for a DJ",
