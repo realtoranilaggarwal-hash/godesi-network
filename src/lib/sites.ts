@@ -42,6 +42,13 @@ export type SiteConfig = {
   rows?: EventRow[];
   sections: Section[];
   about: string[];
+  /** Search-first home with small event cards instead of big teasers. */
+  compact?: boolean;
+  /**
+   * Memorable short links (`/<code>` → event slug) for the big events; every
+   * other event still gets an automatic code from `eventShortCode`.
+   */
+  shortLinks?: Record<string, string>;
   /** Hero search: shown when the site is a lookup tool rather than a feed. */
   search?: { placeholder: string; suggestions: string[] };
 };
@@ -584,6 +591,35 @@ export const SITES: SiteConfig[] = [
         "Bollywood concert",
         "Kids workshop",
       ],
+    },
+  },
+  {
+    key: "eve0",
+    domain: "eve0.com",
+    name: "Eve0",
+    tagline: "Find desi events near you",
+    description:
+      "Search upcoming desi events, parties, festivals and concerts, and share any of them with a short eve0.com link. Tickets are booked on Godesi.com.",
+    emoji: "🎉",
+    gradient: "from-fuchsia-700 via-rose-600 to-amber-500",
+    accent: "text-rose-600",
+    kind: "events",
+    eventPages: true,
+    compact: true,
+    shortLinks: {
+      nye2027: "new-year-eves-party-2027-edison",
+      "927": "singles-new-years-eve-party-2027-nj",
+      singles2027: "singles-new-years-eve-party-2027-nj",
+    },
+    sections: [],
+    about: [
+      "Eve0 is a quick, searchable list of upcoming South Asian community events: parties, festivals, concerts, garba nights, pujas, workshops and meetups.",
+      "Every event has a short eve0.com link that is easy to say, type or print, and opens the event page with the date, venue, directions and ticket prices.",
+      "Events are posted by their organisers on Godesi.com, and tickets are booked there.",
+    ],
+    search: {
+      placeholder: "Search events by name, city or venue",
+      suggestions: ["New Year's Eve", "Party", "Edison NJ", "Garba", "Concert"],
     },
   },
   {

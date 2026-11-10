@@ -16,6 +16,7 @@ import {
   picture,
   place,
   priceLabel,
+  shortPath,
   typePath,
   venuePath,
   type PublicEvent,
@@ -156,12 +157,28 @@ export default async function EventPage({
           </p>
         ) : (
           <p className="text-xs text-slate-500">
-            Tickets are sold by the organiser on Godesi.com. Eventringer lists
+            Tickets are sold by the organiser on Godesi.com. {site.name} lists
             the event; payment, seats and entry passes are handled there.
           </p>
         )}
+        {site.shortLinks && !over ? (
+          <p className="text-sm font-semibold text-slate-600">
+            Short link:{" "}
+            <a
+              href={shortPath(event, site.shortLinks)}
+              className={`font-black ${site.accent}`}
+            >
+              {site.domain}
+              {shortPath(event, site.shortLinks)}
+            </a>
+          </p>
+        ) : null}
         <ShareRow
-          url={`https://${site.domain}/events/${event.slug}`}
+          url={
+            site.shortLinks
+              ? `https://${site.domain}${shortPath(event, site.shortLinks)}`
+              : `https://${site.domain}/events/${event.slug}`
+          }
           title={event.title}
           image={image}
         />
@@ -378,7 +395,7 @@ export default async function EventPage({
         <h2 className="text-xl font-black">
           More desi events in {place(event)}
         </h2>
-        <EventGrid events={others} accent={site.accent} />
+        <EventGrid events={others} accent={site.accent} compact={site.compact} />
         {/* The hubs are built from the upcoming-event facets, so a city or type
             with nothing coming up has no page to link to. */}
         <div className="flex flex-wrap gap-3 text-sm font-bold">

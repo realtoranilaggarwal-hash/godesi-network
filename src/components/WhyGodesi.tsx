@@ -25,7 +25,7 @@ const ADVANTAGES = [
   {
     emoji: "🔎",
     title: "Two audiences, one form",
-    body: "Your event goes live in the Godesi.com directory and gets its own full page here on Eventringer.",
+    body: "Your event goes live in the Godesi.com directory and gets its own full page here.",
   },
   {
     emoji: "📈",

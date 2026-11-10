@@ -3,6 +3,7 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { AdSlot } from "@/components/AdSlot";
+import { CompactSearchBar } from "@/components/CompactSearchBar";
 import { EventGrid } from "@/components/EventGrid";
 import {
   cityPath,
@@ -50,6 +51,7 @@ export default async function TypePage({
 
   return (
     <main className="mx-auto max-w-6xl space-y-8 px-4 py-6">
+      <CompactSearchBar site={site} />
       <nav className="text-xs font-semibold text-slate-500">
         <Link href="/events" className="hover:underline">
           Events
@@ -70,7 +72,7 @@ export default async function TypePage({
         </p>
       </header>
 
-      <EventGrid events={items} accent={site.accent} />
+      <EventGrid events={items} accent={site.accent} compact={site.compact} />
 
       <AdSlot accent={site.accent} />
 

@@ -67,7 +67,7 @@ export default async function SearchPage({
 
       {site.eventPages ? (
         query ? (
-          <EventGrid events={events} accent={site.accent} />
+          <EventGrid events={events} accent={site.accent} compact={site.compact} />
         ) : (
           <p className="text-sm text-slate-600">
             Type a city, festival, artist or venue above to search every

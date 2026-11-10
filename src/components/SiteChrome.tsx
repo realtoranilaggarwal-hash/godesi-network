@@ -8,6 +8,7 @@ const POST_LINKS: Record<string, { href: string; label: string }> = {
   itplacementservices: { href: "/signup", label: "List your consultancy" },
   djswiki: { href: DJ_SIGNUP, label: "List your DJ service free" },
   eventringer: { href: "/events/new", label: "List your event free" },
+  eve0: { href: "/events/new", label: "List your event free" },
   whyuserealtor: {
     href: "/leads/new?category=real-estate&do=buy",
     label: "Compare agents free",
