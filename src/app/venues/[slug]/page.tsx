@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
+import { CompactSearchBar } from "@/components/CompactSearchBar";
 import { EventGrid } from "@/components/EventGrid";
 import {
   cityPath,
@@ -59,6 +60,7 @@ export default async function VenuePage({
 
   return (
     <main className="mx-auto max-w-6xl space-y-8 px-4 py-6">
+      <CompactSearchBar site={site} />
       <nav className="text-xs font-semibold text-slate-500">
         <Link href="/" className="hover:underline">
           {site.name}

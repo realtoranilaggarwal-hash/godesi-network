@@ -3,6 +3,7 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { AdSlot } from "@/components/AdSlot";
+import { CompactSearchBar } from "@/components/CompactSearchBar";
 import { EventGrid } from "@/components/EventGrid";
 import { cityIntro } from "@/lib/eventCopy";
 import {
@@ -56,6 +57,7 @@ export default async function CityPage({
 
   return (
     <main className="mx-auto max-w-6xl space-y-8 px-4 py-6">
+      <CompactSearchBar site={site} />
       <nav className="text-xs font-semibold text-slate-500">
         <Link href="/events" className="hover:underline">
           Events

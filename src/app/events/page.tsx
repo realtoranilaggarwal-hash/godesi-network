@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { headers } from "next/headers";
 import { AdSlot } from "@/components/AdSlot";
+import { CompactSearchBar } from "@/components/CompactSearchBar";
 import { EventGrid } from "@/components/EventGrid";
 import {
   cityPath,
@@ -49,6 +50,7 @@ export default async function EventsIndex({
 
   return (
     <main className="mx-auto max-w-6xl space-y-8 px-4 py-6">
+      <CompactSearchBar site={site} />
       <header className="space-y-2">
         <h1 className="text-3xl font-black sm:text-4xl">
           {query ? `Desi events matching “${query}”` : "Upcoming desi events"}
