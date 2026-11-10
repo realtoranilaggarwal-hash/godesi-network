@@ -70,7 +70,7 @@ export default async function TypePage({
         </p>
       </header>
 
-      <EventGrid events={items} accent={site.accent} />
+      <EventGrid events={items} accent={site.accent} compact={site.compact} />
 
       <AdSlot accent={site.accent} />
 

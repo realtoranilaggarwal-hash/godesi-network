@@ -72,7 +72,7 @@ export default async function CityPage({
         </p>
       </header>
 
-      <EventGrid events={items} accent={site.accent} />
+      <EventGrid events={items} accent={site.accent} compact={site.compact} />
 
       <AdSlot accent={site.accent} />
 

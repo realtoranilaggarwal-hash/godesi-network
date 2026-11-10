@@ -114,7 +114,7 @@ export default async function VenuePage({
           event has its own page on {site.name} with the schedule, line-up and
           ticket prices; booking happens on Godesi.com.
         </p>
-        <EventGrid events={venue.events} accent={site.accent} />
+        <EventGrid events={venue.events} accent={site.accent} compact={site.compact} />
       </section>
 
       <section className="rounded-3xl border border-slate-200 bg-white p-6">

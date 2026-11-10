@@ -2,13 +2,16 @@ import Link from "next/link";
 import { fetchEvents, type PublicEvent } from "@/lib/events";
 import { godesiUrl, type EventRow, type SiteConfig } from "@/lib/sites";
 import { EventCard } from "./EventCard";
+import { EventMiniCard } from "./EventMiniCard";
 
 export function EventGrid({
   events,
   accent,
+  compact = false,
 }: {
   events: PublicEvent[];
   accent: string;
+  compact?: boolean;
 }) {
   if (!events.length) {
     return (
@@ -23,6 +26,16 @@ export function EventGrid({
           List your event free
         </a>{" "}
         and it will show up on this page.
+      </div>
+    );
+  }
+
+  if (compact) {
+    return (
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        {events.map((event) => (
+          <EventMiniCard key={event.slug} event={event} />
+        ))}
       </div>
     );
   }
@@ -62,7 +75,7 @@ export async function EventRowSection({
           </Link>
         ) : null}
       </div>
-      <EventGrid events={items} accent={site.accent} />
+      <EventGrid events={items} accent={site.accent} compact={site.compact} />
     </section>
   );
 }

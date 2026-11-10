@@ -104,6 +104,27 @@ export function eventPath(event: PublicEvent) {
   return `/events/${event.slug}`;
 }
 
+/** A stable five-character code per event, for short share links. */
+export function eventShortCode(slug: string) {
+  let hash = 0x811c9dc5;
+  for (const character of slug) {
+    hash ^= character.charCodeAt(0);
+    hash = Math.imul(hash, 0x01000193) >>> 0;
+  }
+  return hash.toString(36).padStart(5, "0").slice(-5);
+}
+
+/** The short path for an event: a memorable code if it has one, else its hash. */
+export function shortPath(
+  event: { slug: string },
+  shortLinks: Record<string, string> = {},
+) {
+  const named = Object.keys(shortLinks).find(
+    (code) => shortLinks[code] === event.slug,
+  );
+  return `/${named ?? eventShortCode(event.slug)}`;
+}
+
 export function cityPath(city: string) {
   return `/events/in/${slugify(city)}`;
 }

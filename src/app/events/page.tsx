@@ -68,7 +68,7 @@ export default async function EventsIndex({
         </p>
       </header>
 
-      <EventGrid events={items} accent={site.accent} />
+      <EventGrid events={items} accent={site.accent} compact={site.compact} />
 
       {pages > 1 ? (
         <nav className="flex flex-wrap items-center gap-2 text-sm font-bold">
