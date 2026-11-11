@@ -30,8 +30,17 @@ function place(city?: string | null, state?: string | null) {
   return [city, state].filter(Boolean).join(", ");
 }
 
-/** One teaser card. The whole card links to the full record on Godesi. */
-export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
+/** One teaser card. The whole card links to the full record on Godesi —
+ *  or to the local mini card when the site hosts them (godesi.us). */
+export function FeedCard({
+  item,
+  accent,
+  localCards = false,
+}: {
+  item: FeedItem;
+  accent: string;
+  localCards?: boolean;
+}) {
   const title = isNews(item) || isEvent(item) || isLead(item)
     ? item.title
     : item.name;
@@ -45,9 +54,15 @@ export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
       );
 
   const services = isBusiness(item) ? (item.services ?? []) : [];
-  // Who's Who profiles are hosted on this site; everything else opens on Godesi.
-  const href = isElite(item) ? `/people/${item.slug}` : item.url;
-  const external = isElite(item) ? {} : { target: "_blank", rel: "noopener" };
+  // Who's Who profiles and mini cards are hosted on this site; everything
+  // else opens on Godesi.
+  const local = isElite(item)
+    ? `/people/${item.slug}`
+    : localCards && isBusiness(item)
+      ? `/${item.slug}`
+      : null;
+  const href = local ?? item.url;
+  const external = local ? {} : { target: "_blank", rel: "noopener" };
 
   const meta = isNews(item)
     ? [dateLabel(item.publishedAt), place(item.city, item.state), item.source]
@@ -134,7 +149,9 @@ export function FeedCard({ item, accent }: { item: FeedItem; accent: string }) {
               ? "View and claim on Godesi →"
               : isElite(item)
                 ? "Full profile →"
-                : "Read on Godesi →"}
+                : local
+                  ? "View card →"
+                  : "Read on Godesi →"}
         </a>
         <ShareRow url={item.url} title={title} image={image} />
       </div>

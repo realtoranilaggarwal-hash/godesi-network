@@ -8,7 +8,7 @@ import {
   typePath,
 } from "@/lib/events";
 import { fetchChatter, tagPath } from "@/lib/chatter";
-import { fetchFeed, isElite } from "@/lib/feed";
+import { fetchFeed, isBusiness, isElite } from "@/lib/feed";
 import { GUIDES } from "@/lib/guides";
 import { fetchAgents } from "@/lib/realEstate";
 import { siteForHost } from "@/lib/sites";
@@ -92,6 +92,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${base}${tagPath(item.tag)}`,
         changeFrequency: "daily",
         priority: 0.6,
+      });
+    }
+  }
+
+  // godesi.us hosts every listing's short-link mini card.
+  if (site.kind === "cards") {
+    const items = (await fetchFeed({ kind: "businesses", limit: "60" })).filter(
+      isBusiness,
+    );
+    for (const item of items) {
+      entries.push({
+        url: `${base}/${item.slug}`,
+        changeFrequency: "weekly",
+        priority: 0.8,
       });
     }
   }
